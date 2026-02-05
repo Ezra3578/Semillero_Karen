@@ -1,5 +1,6 @@
 import streamlit as st
 from services.auth_service import registrar_usuario
+from utils.style_loader import load_css
 
 
 # --- Configuración de la página ---
@@ -9,16 +10,7 @@ st.set_page_config(
 )
 
 
-# --- Cargar CSS ---
-def cargar_css(path: str):
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    except FileNotFoundError:
-        pass
-
-
-cargar_css("styles/registro.css")
+load_css("styles/registro.css")
 
 
 # --- UI ---
