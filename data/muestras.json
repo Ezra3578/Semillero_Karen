@@ -1,0 +1,236 @@
+[
+    {
+        "Código": "E250906003",
+        "Fecha": "2025-09-06",
+        "Hora": "20:05",
+        "Quién Muestra": "deivid",
+        "Dispositivo": "Grifo",
+        "Fuente": "Externa",
+        "Código Red": "",
+        "Tipo Agua": "ASP - Agua Superficial",
+        "pH": 4.0,
+        "Cloro": 7.0,
+        "Temperatura": 0.08,
+        "Observaciones": "agua estaba muy sucia ",
+        "Valores FQ": {},
+        "Valores Micro": {},
+        "Fecha Recepción": "2025-09-06",
+        "Hora Recepción": "20:07",
+        "Temperatura Recepción": 0.08,
+        "Recepcionó": "fabio",
+        "Parámetros a analizar": {
+            "FQ": [
+                "pH"
+            ],
+            "Micro": [
+                "Mesófilos aerobios"
+            ]
+        },
+        "Estado_FQ": "pendiente",
+        "Estado_Micro": "pendiente"
+    },
+    {
+        "Código": "I250906004",
+        "Fecha": "2025-09-06",
+        "Hora": "23:19",
+        "Quién Muestra": "MATEO",
+        "Dispositivo": "Manguera",
+        "Fuente": "Pozo",
+        "Código Red": "",
+        "Tipo Agua": "AP - Agua Tratada",
+        "pH": 8.0,
+        "Cloro": 7.0,
+        "Temperatura": 23.0,
+        "Observaciones": "",
+        "Valores FQ": {},
+        "Valores Micro": {},
+        "Fecha Recepción": "2025-09-06",
+        "Hora Recepción": "23:21",
+        "Temperatura Recepción": 21.0,
+        "Recepcionó": "MATEO",
+        "Parámetros a analizar": {
+            "FQ": [
+                "Nitrato",
+                "Dureza cálcica",
+                "DQO",
+                "Turbiedad",
+                "Sólidos disueltos totales",
+                "Amonio"
+            ],
+            "Micro": []
+        },
+        "Estado_FQ": "analizado",
+        "Estado_Micro": "analizado",
+        "Resultados": {
+            "FQ": {
+                "Temperatura": 0.0,
+                "pH": 0.0,
+                "Cloro residual libre": 0.0,
+                "Alcalinidad total": 0.0,
+                "Aluminio residual": 0.0,
+                "Calcio": 0.0,
+                "Cloruros": 0.0,
+                "Color aparente": 0.0,
+                "Conductividad": 0.0,
+                "Dureza total": 0.0,
+                "Fosfato": 0.0,
+                "Hierro total": 0.0,
+                "Magnesio": 0.0,
+                "Nitrito": 0.0,
+                "Sólidos disueltos totales": 4.0,
+                "Sulfatos": 0.0,
+                "Turbiedad": 6.0,
+                "Amonio": 6.0,
+                "DQO": 8.0,
+                "Dureza cálcica": 8.0,
+                "Fenol": 0.0,
+                "Fluoruro": 0.0,
+                "Manganeso": 0.0,
+                "Nitrato": 9.0,
+                "Oxígeno disuelto": 0.0
+            }
+        }
+    },
+    {
+        "Código": "R250906005",
+        "Fecha": "2025-09-06",
+        "Hora": "23:26",
+        "Quién Muestra": "MATEO",
+        "Dispositivo": "Canal",
+        "Fuente": "Red",
+        "Código Red": "PR-05",
+        "Tipo Agua": "AP - Agua Tratada",
+        "pH": 6.0,
+        "Cloro": 1.2,
+        "Temperatura": 19.0,
+        "Observaciones": "",
+        "Valores FQ": {},
+        "Valores Micro": {},
+        "Fecha Recepción": "2025-09-06",
+        "Hora Recepción": "23:26",
+        "Temperatura Recepción": 21.0,
+        "Recepcionó": "MATEO",
+        "Parámetros a analizar": {
+            "FQ": [
+                "Cloruros",
+                "Temperatura",
+                "Cloro residual libre",
+                "Aluminio residual",
+                "Color aparente",
+                "Dureza total",
+                "Calcio"
+            ],
+            "Micro": []
+        },
+        "Estado_FQ": "pendiente",
+        "Estado_Micro": "pendiente"
+    },
+    {
+        "Código": "I250906006",
+        "Fecha": "2025-09-06",
+        "Hora": "23:31",
+        "Quién Muestra": "mateo",
+        "Dispositivo": "Manguera",
+        "Fuente": "Embalse",
+        "Código Red": "",
+        "Tipo Agua": "AP - Agua Tratada",
+        "pH": 7.0,
+        "Cloro": 7.0,
+        "Temperatura": 7.0,
+        "Observaciones": "",
+        "Valores FQ": {},
+        "Valores Micro": {},
+        "Fecha Recepción": "2025-12-16",
+        "Hora Recepción": "13:59",
+        "Temperatura Recepción": 0.0,
+        "Recepcionó": "muestra 1 ",
+        "Parámetros a analizar": {
+            "FQ": [
+                "pH",
+                "Cloro residual libre"
+            ],
+            "Micro": [
+                "Coliformes totales",
+                "Mesófilos aerobios"
+            ]
+        },
+        "Estado_FQ": "pendiente",
+        "Estado_Micro": "pendiente"
+    },
+    {
+        "Código": "E251216001",
+        "Fecha": "2025-12-16",
+        "Hora": "13:57",
+        "Quién Muestra": "Yo",
+        "Dispositivo": "Manguera",
+        "Fuente": "Andes Medio",
+        "Código Red": "",
+        "Tipo Agua": "Agua potable (AP)",
+        "pH": 0.13999999999999999,
+        "Cloro": 0.05,
+        "Temperatura": 0.12999999999999998,
+        "Observaciones": "ninguna",
+        "Valores FQ": {},
+        "Valores Micro": {},
+        "Fecha Recepción": "2026-01-29",
+        "Hora Recepción": "18:03",
+        "Temperatura Recepción": 0.0,
+        "Recepcionó": "nonexD",
+        "Parámetros a analizar": {
+            "FQ": [
+                "pH",
+                "Alcalinidad total"
+            ],
+            "Micro": [
+                "Coliformes totales",
+                "Mesófilos aerobios"
+            ]
+        },
+        "Estado_FQ": "pendiente",
+        "Estado_Micro": "pendiente"
+    },
+    {
+        "Código": "R260130001",
+        "Fecha": "2026-01-30",
+        "Hora": "18:14",
+        "Quién Muestra": "dasdasd",
+        "Dispositivo": "Manguera",
+        "Fuente": "Gatillo 0",
+        "Código Red": "Copihue",
+        "Tipo Agua": "Agua subterránea (ASB)",
+        "pH": 1.11,
+        "Cloro": 2.222,
+        "Temperatura": 3.33,
+        "Observaciones": "",
+        "Valores FQ": {},
+        "Valores Micro": {},
+        "Fecha Recepción": "2026-01-30",
+        "Hora Recepción": "18:15",
+        "Temperatura Recepción": 3.537,
+        "Recepcionó": "JuanchisxD",
+        "Parámetros a analizar": {
+            "FQ": [
+                "pH",
+                "Aluminio residual",
+                "Alcalinidad total"
+            ],
+            "Micro": [
+                "Coliformes totales",
+                "Mesófilos aerobios"
+            ]
+        },
+        "Estado_FQ": "analizado",
+        "Estado_Micro": "analizado",
+        "Resultados": {
+            "Micro": {
+                "Coliformes totales": 1.34,
+                "Mesófilos aerobios": 1.35
+            },
+            "FQ": {
+                "pH": 3.57,
+                "Alcalinidad total": 5.78,
+                "Aluminio residual": 2.06
+            }
+        }
+    }
+]

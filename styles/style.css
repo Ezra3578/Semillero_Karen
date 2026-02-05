@@ -1,0 +1,66 @@
+/* ===========================
+   ESTILO GENERAL APP
+=========================== */
+body {
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* ===========================
+   BOTONES DE RADIO (TABS)
+=========================== */
+[data-baseweb="radio"] > div {
+    background-color: #f0f4fa !important;      /* azul claro fondo */
+    border-radius: 8px !important;
+    padding: 6px 14px !important;
+    cursor: pointer !important;
+    margin-right: 6px !important;
+    border: 1px solid #d1d9e6 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* Hover */
+[data-baseweb="radio"] > div:hover {
+    background-color: #bfdbfe !important;      /* azul pastel al hover */
+    border-color: #1e3a8a !important;
+}
+
+/* Activo */
+[data-baseweb="radio"] input:checked + div {
+    background-color: #1e3a8a !important;      /* azul oscuro activo */
+    color: white !important;
+    border-color: #1e3a8a !important;
+    font-weight: 600 !important;
+}
+
+/* ===========================
+   BOTONES (GENERAL)
+=========================== */
+.stButton > button {
+    background-color: #1e3a8a !important;   /* azul oscuro */
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.stButton > button:hover {
+    background-color: #3b82f6 !important;   /* azul celeste en hover */
+    color: white !important;
+}
+
+/* ===========================
+   TARJETAS / TITULOS
+=========================== */
+.section-title {
+    background-color: #f0f4fa !important;   /* azul muy claro */
+    border: 1px solid #d1d9e6 !important;
+    border-radius: 10px !important;
+    padding: 28px 24px !important;
+    font-size: 28px !important;
+    font-weight: 600 !important;
+    color: #1e3a8a !important;              /* azul oscuro */
+    margin-bottom: 20px !important;
+}

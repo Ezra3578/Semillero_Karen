@@ -1,0 +1,30 @@
+[
+    {
+        "nombre": "Karen Daniela",
+        "correo": "dacaria5312@gmail.com",
+        "usuario": "Karen",
+        "contrasena": "$2b$12$4Fs4qpWdM1RwbbXMBnS/yOGOrteBHtbMmrCvyoEQt29p4Tm7q2tZm",
+        "rol": "superusuario"
+    },
+    {
+        "nombre": "Julian Mateo Cruz Diaz",
+        "correo": "julianmateo162@gmail.com",
+        "usuario": "Mateo",
+        "contrasena": "$2b$12$q1puVI2sK9qWIxoMkYLIH.Vh8.hADmK0aj/gTA/zEM0HRI6xXiPPq",
+        "rol": "superusuario"
+    },
+    {
+        "nombre": "Brisa Martina",
+        "correo": "brisa123@gmail.com",
+        "usuario": "brisa",
+        "contrasena": "$2b$12$xCZEpRWs07U3sCztJmvLQuIlj6QAWU7u.QsnQsFX/3jf12bwe.4fW",
+        "rol": "laboratorio"
+    },
+    {
+        "nombre": "Usuario",
+        "correo": "correo@gmail.com",
+        "usuario": "Usuario",
+        "contrasena": "$2b$12$yjP9z3A1A27GlSoZcOXlQeGvbyQ92Qu6puvc0YK.vJPVp40Xb6oKe",
+        "rol": "superusuario"
+    }
+]
