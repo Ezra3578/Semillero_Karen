@@ -10,6 +10,8 @@ import bcrypt
 ############
 from excel.excel_generator import Excel
 from pdf.pdf_generator import PDF
+from services.auth_service import login
+from services.session_service import login_user, is_logged_in
 
 
 with open("styles/style.css") as f:
@@ -872,76 +874,40 @@ def mostrar_login_con_imagen():
         contraseña_input = st.text_input("Contraseña", type="password")
 
         if st.button("Ingresar"):
-            usuarios = cargar_usuarios()
+            ok, msg, data = login(usuario_input, contraseña_input)
 
-            usuario_encontrado = next((u for u in usuarios if u["usuario"] == usuario_input), None)
-
-            if usuario_encontrado:
-                hash_guardado = usuario_encontrado["contrasena"]
-                # Verificación segura de contraseña
-                if bcrypt.checkpw(contraseña_input.encode(), hash_guardado.encode()):
-                    st.session_state.logueado = True
-                    st.session_state.usuario = usuario_input
-                    st.session_state.rol = usuario_encontrado.get("rol", "superusuario")  # Guardar rol
-                    st.success(f"Bienvenido, {usuario_input} ({st.session_state.rol})")
-                    st.rerun()
-                else:
-                    st.error("Contraseña incorrecta.")
+            if ok:
+                login_user(
+                    usuario=data["usuario"],
+                    rol=data["rol"]
+                )
+                st.success(msg)
+                return True
             else:
-                st.error("Usuario no encontrado.")
+                st.error(msg)
 
-        st.markdown(
-            """
-            <div style="text-align: center; margin-top: 5px;">
-                <a href="/registro" target="_blank" style="
-                    background-color: #0057A0;
-                    color: white;
-                    padding: 10px 20px;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    font-weight: bold;
-                    display: inline-block;
-                ">
-                    Regístrate
-                </a>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        _, col_centro, _ = st.columns([1, 1.5, 1])  #Centrar el boton de registrarse
+
+        with col_centro:
+            if st.button("Registrarse", use_container_width=True):
+                st.switch_page("pages/registro.py")
+
+
+    return False
 
 # -------------------------
 # -------------------------
 # Flujo principal
 # -------------------------
-if "logueado" not in st.session_state:
-    st.session_state.logueado = False
-if "data" not in st.session_state:
-    st.session_state.data = []
-if not st.session_state.logueado:
-    mostrar_login_con_imagen()
-else:
-    mostrar_header_doble()
 
-    if st.button("🔒 Cerrar sesión"):
-        cerrar_sesion()
+if not is_logged_in():
+    logueado = mostrar_login_con_imagen()
 
-    # Contenedor de bienvenida estilizado
-    with st.container():
-        st.markdown("""
-            <div style='
-                background-color: #f8f9fa;
-                padding: 30px;
-                border-radius: 12px;
-                border: 1px solid #ddd;
-                text-align: center;
-                box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
-            '>
-                <h2 style='color: #005B8F; font-family: "Segoe UI", sans-serif;'> Trazabilidad a Muestras de Agua</h2>
-                <p style='font-size: 16px; color: #333;'>Utiliza las opciones a continuación para registrar o analizar muestras.</p>
-            </div>
-        """, unsafe_allow_html=True)
+    if logueado:
+        st.rerun()
+else: 
+    st.switch_page("pages/pruebasxD.py")
 
-        st.markdown("<br>", unsafe_allow_html=True)
 
 # Botones según el rol del usuario
 if st.session_state.rol == "superusuario":

@@ -30,19 +30,28 @@ usuario = st.text_input("Usuario")
 contrasena = st.text_input("Contraseña", type="password")
 
 
-# --- Acción ---
-if st.button("Registrar"):
-    ok, mensaje = registrar_usuario(
-        nombre=nombre,
-        correo=correo,
-        usuario=usuario,
-        contrasena=contrasena
-    )
+# Botones/Acciones
 
-    if ok:
-        st.success(mensaje)
-        st.info("Ahora puedes iniciar sesión.")
-        # Opcional:
-        # st.switch_page("app.py")
-    else:
-        st.error(mensaje)
+col_izq, col_der = st.columns([1, 1])  #Organizar botones
+
+with col_izq:
+    if st.button("Registrar"):
+        ok, mensaje = registrar_usuario(
+            nombre=nombre,
+            correo=correo,
+            usuario=usuario,
+            contrasena=contrasena
+        )
+
+        if ok:
+            st.success(mensaje)
+            st.info("Ahora puedes iniciar sesión.")
+        else:
+            st.error(mensaje)
+
+with col_der:
+    _, col_btn = st.columns([1.5, 1])   #Dejar el boton a la derecha sin CSS xD
+    with col_btn:
+        if st.button("Volver", ):
+            st.switch_page("app.py")
+
