@@ -1,0 +1,19 @@
+[data-testid="stAppViewContainer"] {
+    background-color: #0EB4F5;
+}
+
+.block-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.block-container > div:first-child {
+    background-color: white;
+    padding: 2rem 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    max-width: 500px;
+    width: 100%;
+}
