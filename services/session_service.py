@@ -36,3 +36,24 @@ def require_role(rol: str, redirect="app.py"):
     if st.session_state.get("rol") != rol:
         st.error("No tienes permisos para acceder.")
         st.switch_page(redirect)
+
+
+ROLE_PERMISSIONS = {
+    "superusuario": {
+        "registrar_muestra",
+        "recibir_muestra",
+        "analizar_muestra",
+        "ver_informacion_muestra",
+        "gestion_usuarios"
+    },
+    "toma_muestra": {
+        "registrar_muestra"
+    },
+    "laboratorio": {
+        "analizar_muestra"
+    }
+}
+
+def can(permission: str):
+    role = st.session_state.get("rol")
+    return permission in ROLE_PERMISSIONS.get(role, set())

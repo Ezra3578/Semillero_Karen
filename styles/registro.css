@@ -1,7 +1,9 @@
+/* Fondo general */
 [data-testid="stAppViewContainer"] {
     background-color: #0EB4F5;
 }
 
+/* Centrado del formulario */
 .block-container {
     display: flex;
     justify-content: center;
@@ -9,6 +11,7 @@
     min-height: 100vh;
 }
 
+/* Tarjeta */
 .block-container > div:first-child {
     background-color: white;
     padding: 2rem 3rem;
@@ -16,4 +19,13 @@
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     max-width: 500px;
     width: 100%;
+    color: #111;
+}
+
+/* Dark mode compatible */
+@media (prefers-color-scheme: dark) {
+    .block-container > div:first-child {
+        background-color: white;
+        color: #111;
+    }
 }

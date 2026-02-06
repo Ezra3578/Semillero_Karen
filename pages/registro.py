@@ -1,7 +1,11 @@
 import streamlit as st
-from services.auth_service import registrar_usuario
-from utils.style_loader import load_css
 
+from services.auth_service import registrar_usuario
+
+from utils.style_loader import load_css
+from utils.hide_st_menu import hide_st_menu
+
+hide_st_menu()
 
 # --- Configuración de la página ---
 st.set_page_config(
@@ -10,7 +14,7 @@ st.set_page_config(
 )
 
 
-load_css("styles/registro.css")
+load_css("registro.css")
 
 
 # --- UI ---
@@ -24,26 +28,20 @@ contrasena = st.text_input("Contraseña", type="password")
 
 # Botones/Acciones
 
-col_izq, col_der = st.columns([1, 1])  #Organizar botones
+if st.button("Registrar"):
+    ok, mensaje = registrar_usuario(
+        nombre=nombre,
+        correo=correo,
+        usuario=usuario,
+        contrasena=contrasena
+    )
 
-with col_izq:
-    if st.button("Registrar"):
-        ok, mensaje = registrar_usuario(
-            nombre=nombre,
-            correo=correo,
-            usuario=usuario,
-            contrasena=contrasena
-        )
+    if ok:
+        st.success(mensaje)
+        st.info("Ahora puedes iniciar sesión.")
+    else:
+        st.error(mensaje)
 
-        if ok:
-            st.success(mensaje)
-            st.info("Ahora puedes iniciar sesión.")
-        else:
-            st.error(mensaje)
-
-with col_der:
-    _, col_btn = st.columns([1.5, 1])   #Dejar el boton a la derecha sin CSS xD
-    with col_btn:
-        if st.button("Volver", ):
-            st.switch_page("app.py")
+if st.button("Volver", ):
+    st.switch_page("app.py")
 

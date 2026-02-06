@@ -10,12 +10,14 @@ import bcrypt
 ############
 from excel.excel_generator import Excel
 from pdf.pdf_generator import PDF
+
 from services.auth_service import login
 from services.session_service import login_user, is_logged_in
 
+from utils.style_loader import load_css
+from utils.hide_st_menu import hide_st_menu
 
-with open("styles/style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+load_css("style.css")
 
 if "data" not in st.session_state:
     if os.path.exists("data/muestras.json"):
@@ -24,40 +26,7 @@ if "data" not in st.session_state:
     else:
         st.session_state.data = []
 
-st.markdown("""
-    <style>
-        /* Oculta completamente el menú lateral y su espacio */
-        [data-testid="stSidebar"] {
-            display: none !important;
-        }
-
-        /* Expande el contenido a todo el ancho */
-        [data-testid="stAppViewContainer"] > .main {
-            margin-left: 0rem;
-        }
-
-        /* Oculta el botón hamburguesa (≡) */
-        [data-testid="collapsedControl"] {
-            display: none !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# Ocultar el menú lateral y el ícono de Streamlit
-st.markdown("""
-    <style>
-        /* Ocultar menú lateral */
-        [data-testid="stSidebarNav"] {
-            display: none;
-        }
-
-        /* Ocultar botón de menú (hamburguesa) */
-        [data-testid="collapsedControl"] {
-            display: none;
-        }
-    </style>
-""", unsafe_allow_html=True)
-    
+hide_st_menu()
 
 # === GESTIÓN MULTIUSUARIO ===
 # === CONFIGURACIÓN DE PÁGINA ===
@@ -100,61 +69,7 @@ if "logueado" not in st.session_state:
 
 if "rol" not in st.session_state:
     st.session_state.rol = "usuario"
-# -------------------------
-#Convertir imagen a base64
-# -------------------------
-def image_to_base64(path):
-    with open(path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()
-logo_floter = image_to_base64("images/logo_floter.png")  
 
-# -------------------------
-# Header con logos
-# -------------------------
-def mostrar_header_doble():
-
-    with open("images/LOGO USTA.png", "rb") as f1, open("images/LOGO.png", "rb") as f2, open("images/NOMBRE LOGO.png", "rb") as f3:
-        logo_usta = base64.b64encode(f1.read()).decode()
-        logo_empresa = base64.b64encode(f2.read()).decode()
-        logo_nombre = base64.b64encode(f3.read()).decode()
-
-    st.markdown(f"""
-        <!-- Franja superior gris -->
-        <div style="background-color: #e5e5e5; padding: 5px 30px; display: flex; align-items: center; justify-content: flex-end;">
-            <img src="data:image/png;base64,{logo_usta}" style="height: 60px;">
-        </div>
-
-        <!-- Franja inferior con logos de empresa y texto -->
-        <div style="background-color: white; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <img src="data:image/png;base64,{logo_empresa}" style="height: 70px;">
-                <div style="border-left: 2px solid #ccc; height: 60px;"></div>
-                <img src="data:image/png;base64,{logo_nombre}" style="height: 70px;">
-            </div>
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="border-left: 2px solid #ccc; height: 60px;"></div>
-                <div style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100%;
-                    padding-left: 20px;
-                ">
-                    <div style="
-                        font-size: 24px;
-                        font-weight: 600;
-                        color: #0057A0;
-                        font-family: 'Segoe UI Semibold', 'Segoe UI', sans-serif;
-                        letter-spacing: 1.2px;
-                        line-height: 1.1;
-                        text-align: center;
-                    ">
-                        Sistema de registro de<br>muestras
-                    </div>
-                </div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
 
 # -------------------------
 # Botón de cerrar sesión
@@ -906,7 +821,7 @@ if not is_logged_in():
     if logueado:
         st.rerun()
 else: 
-    st.switch_page("pages/pruebasxD.py")
+    st.switch_page("pages/landing.py")
 
 
 # Botones según el rol del usuario
@@ -981,23 +896,4 @@ if "pantalla" in st.session_state:
         formulario_gestion_usuarios()
 
 
-
-
-
-# FOOTER FINAL CON LOGO
-st.markdown(f"""
-    <div style="display: flex; justify-content: space-between; align-items: center;
-                padding: 15px; margin-top: 40px; background-color: #f2f2f2; border-radius: 8px;
-                font-family: Arial, sans-serif; font-size: 14px;">
-        <div style="flex: 2;">
-            <b>Laboratorio de Calidad del Agua</b><br>
-            Universidad Santo Tomás – Facultad de Ingeniería Ambiental<br>
-            📍 Bogotá D.C. | ☎️ +57 314 367 9332<br>
-            ✉️ km@usantotomas.edu.co
-        </div>
-        <div style="flex: 1; text-align: right;">
-            <img src="data:image/png;base64,{logo_floter}" width="100">
-        </div>
-    </div>
-""", unsafe_allow_html=True)
 
