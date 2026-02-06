@@ -232,5 +232,23 @@
                 "Aluminio residual": 2.06
             }
         }
+    },
+    {
+        "Código": "R260205001",
+        "Fecha": "2026-02-05",
+        "Hora": "21:40",
+        "Fuente": " Botello Alto",
+        "Quién Muestra": "gdafa",
+        "Dispositivo": "Manguera",
+        "Tipo Agua": "Agua envasada (AE)",
+        "Código Red": "Silveria Espinoza",
+        "pH": 0.12,
+        "Cloro": 1.23,
+        "Temperatura": 2.34,
+        "Observaciones": "Ninguna",
+        "Estado_FQ": "no_aplica",
+        "Estado_Micro": "no_aplica",
+        "Resultados_FQ": {},
+        "Resultados_Micro": {}
     }
 ]
