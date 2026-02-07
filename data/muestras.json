@@ -6,14 +6,13 @@
         "Quién Muestra": "deivid",
         "Dispositivo": "Grifo",
         "Fuente": "Externa",
-        "Código Red": "",
+        "Código Red": null,
         "Tipo Agua": "ASP - Agua Superficial",
         "pH": 4.0,
         "Cloro": 7.0,
         "Temperatura": 0.08,
         "Observaciones": "agua estaba muy sucia ",
-        "Valores FQ": {},
-        "Valores Micro": {},
+        "Estado Recepción": "recibida",
         "Fecha Recepción": "2025-09-06",
         "Hora Recepción": "20:07",
         "Temperatura Recepción": 0.08,
@@ -27,7 +26,11 @@
             ]
         },
         "Estado_FQ": "pendiente",
-        "Estado_Micro": "pendiente"
+        "Estado_Micro": "pendiente",
+        "Resultados": {
+            "FQ": {},
+            "Micro": {}
+        }
     },
     {
         "Código": "I250906004",
@@ -36,14 +39,13 @@
         "Quién Muestra": "MATEO",
         "Dispositivo": "Manguera",
         "Fuente": "Pozo",
-        "Código Red": "",
+        "Código Red": null,
         "Tipo Agua": "AP - Agua Tratada",
         "pH": 8.0,
         "Cloro": 7.0,
         "Temperatura": 23.0,
         "Observaciones": "",
-        "Valores FQ": {},
-        "Valores Micro": {},
+        "Estado Recepción": "recibida",
         "Fecha Recepción": "2025-09-06",
         "Hora Recepción": "23:21",
         "Temperatura Recepción": 21.0,
@@ -60,35 +62,17 @@
             "Micro": []
         },
         "Estado_FQ": "analizado",
-        "Estado_Micro": "analizado",
+        "Estado_Micro": "no_aplica",
         "Resultados": {
             "FQ": {
-                "Temperatura": 0.0,
-                "pH": 0.0,
-                "Cloro residual libre": 0.0,
-                "Alcalinidad total": 0.0,
-                "Aluminio residual": 0.0,
-                "Calcio": 0.0,
-                "Cloruros": 0.0,
-                "Color aparente": 0.0,
-                "Conductividad": 0.0,
-                "Dureza total": 0.0,
-                "Fosfato": 0.0,
-                "Hierro total": 0.0,
-                "Magnesio": 0.0,
-                "Nitrito": 0.0,
                 "Sólidos disueltos totales": 4.0,
-                "Sulfatos": 0.0,
                 "Turbiedad": 6.0,
                 "Amonio": 6.0,
                 "DQO": 8.0,
                 "Dureza cálcica": 8.0,
-                "Fenol": 0.0,
-                "Fluoruro": 0.0,
-                "Manganeso": 0.0,
-                "Nitrato": 9.0,
-                "Oxígeno disuelto": 0.0
-            }
+                "Nitrato": 9.0
+            },
+            "Micro": {}
         }
     },
     {
@@ -104,8 +88,7 @@
         "Cloro": 1.2,
         "Temperatura": 19.0,
         "Observaciones": "",
-        "Valores FQ": {},
-        "Valores Micro": {},
+        "Estado Recepción": "recibida",
         "Fecha Recepción": "2025-09-06",
         "Hora Recepción": "23:26",
         "Temperatura Recepción": 21.0,
@@ -123,7 +106,11 @@
             "Micro": []
         },
         "Estado_FQ": "pendiente",
-        "Estado_Micro": "pendiente"
+        "Estado_Micro": "no_aplica",
+        "Resultados": {
+            "FQ": {},
+            "Micro": {}
+        }
     },
     {
         "Código": "I250906006",
@@ -132,14 +119,13 @@
         "Quién Muestra": "mateo",
         "Dispositivo": "Manguera",
         "Fuente": "Embalse",
-        "Código Red": "",
+        "Código Red": null,
         "Tipo Agua": "AP - Agua Tratada",
         "pH": 7.0,
         "Cloro": 7.0,
         "Temperatura": 7.0,
         "Observaciones": "",
-        "Valores FQ": {},
-        "Valores Micro": {},
+        "Estado Recepción": "recibida",
         "Fecha Recepción": "2025-12-16",
         "Hora Recepción": "13:59",
         "Temperatura Recepción": 0.0,
@@ -155,7 +141,11 @@
             ]
         },
         "Estado_FQ": "pendiente",
-        "Estado_Micro": "pendiente"
+        "Estado_Micro": "pendiente",
+        "Resultados": {
+            "FQ": {},
+            "Micro": {}
+        }
     },
     {
         "Código": "E251216001",
@@ -164,14 +154,13 @@
         "Quién Muestra": "Yo",
         "Dispositivo": "Manguera",
         "Fuente": "Andes Medio",
-        "Código Red": "",
+        "Código Red": null,
         "Tipo Agua": "Agua potable (AP)",
         "pH": 0.13999999999999999,
         "Cloro": 0.05,
         "Temperatura": 0.12999999999999998,
         "Observaciones": "ninguna",
-        "Valores FQ": {},
-        "Valores Micro": {},
+        "Estado Recepción": "recibida",
         "Fecha Recepción": "2026-01-29",
         "Hora Recepción": "18:03",
         "Temperatura Recepción": 0.0,
@@ -187,7 +176,11 @@
             ]
         },
         "Estado_FQ": "pendiente",
-        "Estado_Micro": "pendiente"
+        "Estado_Micro": "pendiente",
+        "Resultados": {
+            "FQ": {},
+            "Micro": {}
+        }
     },
     {
         "Código": "R260130001",
@@ -199,11 +192,10 @@
         "Código Red": "Copihue",
         "Tipo Agua": "Agua subterránea (ASB)",
         "pH": 1.11,
-        "Cloro": 2.222,
+        "Cloro": 2.22,
         "Temperatura": 3.33,
         "Observaciones": "",
-        "Valores FQ": {},
-        "Valores Micro": {},
+        "Estado Recepción": "recibida",
         "Fecha Recepción": "2026-01-30",
         "Hora Recepción": "18:15",
         "Temperatura Recepción": 3.537,
@@ -219,8 +211,8 @@
                 "Mesófilos aerobios"
             ]
         },
-        "Estado_FQ": "analizado",
-        "Estado_Micro": "analizado",
+        "Estado_FQ": "pendiente",
+        "Estado_Micro": "pendiente",
         "Resultados": {
             "Micro": {
                 "Coliformes totales": 1.34,
@@ -234,21 +226,37 @@
         }
     },
     {
-        "Código": "R260205001",
-        "Fecha": "2026-02-05",
-        "Hora": "21:40",
-        "Fuente": " Botello Alto",
-        "Quién Muestra": "gdafa",
-        "Dispositivo": "Manguera",
-        "Tipo Agua": "Agua envasada (AE)",
-        "Código Red": "Silveria Espinoza",
-        "pH": 0.12,
-        "Cloro": 1.23,
-        "Temperatura": 2.34,
-        "Observaciones": "Ninguna",
-        "Estado_FQ": "no_aplica",
-        "Estado_Micro": "no_aplica",
-        "Resultados_FQ": {},
-        "Resultados_Micro": {}
+        "Código": "E260206001",
+        "Fecha": "2026-02-06",
+        "Hora": "19:54",
+        "Quién Muestra": "dasdasd",
+        "Dispositivo": "Grifo",
+        "Fuente": "Andes Medio",
+        "Código Red": null,
+        "Tipo Agua": "Agua superficial (ASP)",
+        "pH": 0.01,
+        "Cloro": 0.1,
+        "Temperatura": 1.0,
+        "Observaciones": "",
+        "Estado Recepción": "recibida",
+        "Fecha Recepción": "2026-02-06",
+        "Hora Recepción": "20:15",
+        "Temperatura Recepción": 2.06,
+        "Recepcionó": "z3",
+        "Parámetros a analizar": {
+            "FQ": [
+                "Oxígeno disuelto",
+                "Aluminio residual"
+            ],
+            "Micro": [
+                "Mesófilos aerobios"
+            ]
+        },
+        "Estado_FQ": "pendiente",
+        "Estado_Micro": "pendiente",
+        "Resultados": {
+            "FQ": {},
+            "Micro": {}
+        }
     }
 ]

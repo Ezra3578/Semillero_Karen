@@ -1,4 +1,3 @@
-from datetime import date
 from typing import Iterable
 
 from laboratory.domain.sample import Sample
@@ -6,10 +5,9 @@ from laboratory.domain.rules import validate_sample_input
 from laboratory.domain.sample_code_generator import generate_sample_code
 
 
-def register_sample(data: dict, *, existing_codes: Iterable[str],) -> Sample:
+def register_sample_uc(data: dict, *, existing_codes: Iterable[str],) -> Sample:
     
-
-    # 1️⃣ Validar reglas de negocio
+    # Validar reglas de negocio
     validate_sample_input(data)
 
     # Generar el ID

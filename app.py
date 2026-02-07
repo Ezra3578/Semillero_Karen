@@ -250,115 +250,6 @@ def formulario_recepcion_muestra():
                         st.success(f"Parámetros de {muestra['Código']} actualizados")
                         st.rerun()
 
-#------------------------------------------------------------
-# REGISTRO MUESTRA
-def formulario_registro_muestra():
-    st.markdown("""
-        <div style='background-color: #f0f4f8; padding: 25px; border-radius: 10px; border: 1px solid #ccc;'>
-            <h3 style='color: #0057A0;'>Registro de Muestra</h3>
-        </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-    if "puntos_red" not in st.session_state:
-        st.session_state["puntos_red"] = [
-        "San Cristóbal", "Silveria Espinoza", "Santa Rita", "Copihue", "Alcaldía",
-        "Girardot", "Arboleda", "Manablanca", "Carcel de la policia", "Batallón",
-        "Universidad", "Coliseo", "Brasilia", "Hospital", "SENA", "Prado",
-        "Pueblo Viejo", "Villa Olímpica"]
-    
-    with col1:
-        tipo_muestra = st.selectbox("Tipo de Muestra", ["", "Interna", "Red", "Externa"])
-        
-        codigo_punto_red = ""
-        if tipo_muestra == "Red":
-            opciones_red = st.session_state["puntos_red"] + ["Crear nuevo punto de red"]
-            seleccion = st.selectbox("Código del punto de red", [""] + opciones_red)
-
-
-            if seleccion == "Crear nuevo punto de red":
-                nuevo_punto = st.text_input("Ingrese el nuevo código del punto de red")
-                if nuevo_punto:
-                    if nuevo_punto not in st.session_state["puntos_red"]:
-                        st.session_state["puntos_red"].append(nuevo_punto)
-                    codigo_punto_red = nuevo_punto
-            elif seleccion:
-                codigo_punto_red = seleccion
-        fecha = st.date_input("Fecha")
-        quien_muestrea = st.text_input("Persona que Tomó la Muestra")          
-        dispositivo = st.selectbox("Dispositivo de Toma de Muestra", ["", "Manguera", "Canal", "Grifo", "Otro"])       
-        if dispositivo == "Otro":
-            dispositivo_otro = st.text_input("Especifique el dispositivo")
-            dispositivo = dispositivo_otro if dispositivo_otro else dispositivo
-        tipo_agua = st.selectbox("Tipo de Agua", ["", "Agua potable (AP)", "Agua superficial (ASP)", "Agua subterránea (ASB)", "Agua envasada (AE)", "Agua lluvia (AL)",  "Otra (O)"])
-        if tipo_agua == "Otra (O)":
-            tipo_agua_otro = st.text_input("Especifique el tipo de agua")
-            tipo_agua = tipo_agua_otro if tipo_agua_otro else tipo_agua 
-    with col2:
-        hora = st.time_input("Hora")  
-        fuente = st.selectbox ("Fuente de Abastecimiento", ["", "Andes Medio", "Mancilla Bajo", " Botello Alto", "San Rafael I", "San Rafael II", "Deudoro Aponte", "Manablanca","Cartagenita","Guapucha II","Gatillo 0","Gatillo 1", "Gatillo 2","Gatillo 3"])
-        observaciones = st.text_area("Observaciones")
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("---", unsafe_allow_html=True)
-    st.markdown("""
-        <div style='background-color: #f0f4f8; padding: 25px; border-radius: 10px; border: 1px solid #ccc;'>
-               <h3 style='color: #0057A0;'>Datos In Situ</h3>
-        </div>
-  """, unsafe_allow_html=True)
-
-    col3, col4, col5 = st.columns(3)
-    with col3:
-        ph = st.number_input("pH", format="%.2f", step=0.01)
-    with col4:
-        cloro = st.number_input("Cloro (mg/L)", format="%.2f", step=0.01)
-    with col5:
-        temperatura = st.number_input("Temperatura (°C)", format="%.2f", step=0.01)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    guardar = st.button("Guardar muestra", use_container_width=True)
-    if guardar:
-        # === VALIDACIÓN DE CAMPOS OBLIGATORIOS ===
-        campos_obligatorios = [
-            fecha, quien_muestrea.strip(), dispositivo, tipo_agua, hora, fuente
-        ]
-        if tipo_muestra == "Red":
-            campos_obligatorios.append(codigo_punto_red.strip())
-
-        if not all(campos_obligatorios):
-            st.warning(" Por favor, completa todos los campos antes de continuar.")
-            return
-
-
-        #Creacion ID unico
-        fecha_codigo = fecha.strftime('%y%m%d')
-        existentes = [row["Código"] for row in st.session_state.data if row["Código"][1:7] == fecha_codigo]
-        numeros_existentes = [int(cod[7:]) for cod in existentes]
-        siguiente = max(numeros_existentes, default=0) + 1
-        letra_fuente = "I" if tipo_muestra=="Interna"  else ("R" if tipo_muestra == "Red" else "E")
-        codigo = f"{letra_fuente}{fecha_codigo}{siguiente:03d}"
-
-        nueva_muestra = {
-            "Código": codigo,
-            "Fecha": fecha.strftime("%Y-%m-%d"),
-            "Hora": hora.strftime("%H:%M"),
-            "Quién Muestra": quien_muestrea,
-            "Dispositivo": dispositivo,
-            "Fuente": fuente,
-            "Código Red": codigo_punto_red,
-            "Tipo Agua": tipo_agua,
-            "pH": ph,
-            "Cloro": cloro,
-            "Temperatura": temperatura,
-            "Observaciones": observaciones,
-            "Valores FQ": {},
-            "Valores Micro": {}
-        }
-
-        st.session_state.data.append(nueva_muestra)
-        guardar_datos()
-        st.success(f" Muestra registrada con código: **{codigo}**")
 
 # FORMULARIO ANÁLISIS DE LABORATORIO
 # -----------------------------------
@@ -881,7 +772,7 @@ def guardar_datos():
 
 if "pantalla" in st.session_state:
     if st.session_state.pantalla == "registro":
-        formulario_registro_muestra()
+        pass
     
     elif st.session_state.pantalla == "recepcion":
         formulario_recepcion_muestra()
