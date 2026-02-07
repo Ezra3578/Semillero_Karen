@@ -34,12 +34,16 @@ if not can("recibir_muestra"):
     st.stop()
 
 #Estilo
-load_css("sample_reception.css")
+load_css("laboratory_pages.css")
 
 
 #Estado de la pestaña de recepcion
 if "tab_recepcion" not in st.session_state:
     st.session_state.tab_recepcion = "nuevas"
+
+#Regresar a la landing page
+if st.button("Volver"):
+    st.switch_page("pages/landing.py")
 
 # Título
 st.markdown(

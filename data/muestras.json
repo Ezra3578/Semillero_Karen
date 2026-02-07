@@ -258,5 +258,47 @@
             "FQ": {},
             "Micro": {}
         }
+    },
+    {
+        "Código": "I260207001",
+        "Fecha": "2026-02-07",
+        "Hora": "09:31",
+        "Quién Muestra": "dsacs",
+        "Dispositivo": "Canal",
+        "Fuente": " Botello Alto",
+        "Código Red": null,
+        "Tipo Agua": "Agua lluvia (AL)",
+        "pH": 1.11,
+        "Cloro": 2.22,
+        "Temperatura": 3.33,
+        "Observaciones": "El agua era rara xD",
+        "Estado Recepción": "recibida",
+        "Fecha Recepción": "2026-02-07",
+        "Hora Recepción": "09:32",
+        "Temperatura Recepción": 15.3,
+        "Recepcionó": "Alguien supongo xD",
+        "Parámetros a analizar": {
+            "FQ": [
+                "Temperatura",
+                "Color aparente",
+                "Hierro total",
+                "Calcio",
+                "Magnesio",
+                "Nitrito",
+                "Sulfatos",
+                "Conductividad"
+            ],
+            "Micro": [
+                "Escherichia coli",
+                "Coliformes totales",
+                "Mesófilos aerobios"
+            ]
+        },
+        "Estado_FQ": "pendiente",
+        "Estado_Micro": "pendiente",
+        "Resultados": {
+            "FQ": {},
+            "Micro": {}
+        }
     }
 ]

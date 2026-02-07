@@ -18,9 +18,33 @@
     color: #444;
 }
 
+/*Solucionar colores con modo oscuro*/
 @media (prefers-color-scheme: dark) {
     .action-card {
         background-color: #f8f9fa;
         color: #111;
     }
+}
+
+/* Botones tipo pestaña */
+.stButton button {
+    background-color: #1e3a8a !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 10px 16px !important;
+    width: 100% !important;
+}
+
+/* Efecto hover */
+.stButton button:hover {
+    background-color: #e8f0fe !important;
+}
+
+/* Botón activo */
+.active-btn button {
+    background-color: #1e3a8a !important;
+    color: white !important;
 }

@@ -24,6 +24,17 @@ user = get_user()
 # Header
 render_header()
 
+#Cerrar sesion
+def cerrar_sesion():
+    st.session_state.clear()
+    st.success("Sesión cerrada.")
+    st.rerun()
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+if st.button("🔒 Cerrar sesión"):
+        cerrar_sesion()
+
 # Acciones
 def action_card(title, description, button_text, page):
     load_css("action_card.css")

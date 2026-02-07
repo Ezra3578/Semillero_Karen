@@ -19,12 +19,12 @@ from utils.hide_st_menu import hide_st_menu
 
 load_css("style.css")
 
-if "data" not in st.session_state:
-    if os.path.exists("data/muestras.json"):
-        with open("data/muestras.json", "r", encoding="utf-8") as f:
-            st.session_state.data = json.load(f)
-    else:
-        st.session_state.data = []
+# if "data" not in st.session_state:
+#     if os.path.exists("data/muestras.json"):
+#         with open("data/muestras.json", "r", encoding="utf-8") as f:
+#             st.session_state.data = json.load(f)
+#     else:
+#         st.session_state.data = []
 
 hide_st_menu()
 
@@ -78,177 +78,6 @@ def cerrar_sesion():
     st.session_state.clear()
     st.success("Sesión cerrada.")
     st.rerun()
-    
-#--------------------------
-# FORMULARIO RECEPCIÓN MUESTRA
-#-------------------------
-def formulario_recepcion_muestra():
-
-    # ================================
-    # 1. ESTILOS GLOBAL PARA LA SECCIÓN
-    # ================================
-    st.markdown("""
-    <style>
-        /* Caja de título */
-        .titulo-seccion {
-            background-color: #f0f4fa;
-            border: 1px solid #d1d9e6;
-            border-radius: 8px;
-            padding: 22px 24px;
-            font-size: 26px;
-            font-weight: 600;
-            color: #1e3a8a;
-            margin-bottom: 20px;
-        }
-
-        /* Botones tipo pestaña */
-        .stButton button {
-            background-color: #1e3a8a !important;
-            color: #ffffff !important;
-            border: 2px solid #ffffff !important;
-            border-radius: 10px !important;
-            font-size: 16px !important;
-            font-weight: 600 !important;
-            padding: 10px 16px !important;
-            width: 100% !important;
-        }
-
-        /* Efecto hover */
-        .stButton button:hover {
-            background-color: #e8f0fe !important;
-        }
-
-        /* Botón activo */
-        .active-btn button {
-            background-color: #1e3a8a !important;
-            color: white !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-    if "tab_recepcion" not in st.session_state:
-        st.session_state.tab_recepcion = "nuevas"
-
-    # ================================
-    # 2. TÍTULO PRINCIPAL
-    # ================================
-    st.markdown('<div class="titulo-seccion">Recepción de muestra</div>', unsafe_allow_html=True)
-
-    # ================================
-    # 3. BOTONES DE NAVEGACIÓN
-    # ================================
-    col1, col2 = st.columns([1, 1])
-
-    with col1:
-        btn1 = st.button("Recepción de muestra")
-    with col2:
-        btn2 = st.button("Muestras recepcionadas")
-
-    # Actualizar vista
-    if btn1:
-        st.session_state.tab_recepcion = "nuevas"
-    elif btn2:
-        st.session_state.tab_recepcion = "recepcionadas"
-
-    # Aplicación visual de botón activo
-    if st.session_state.tab_recepcion == "nuevas":
-        st.markdown('<div class="active-btn"></div>', unsafe_allow_html=True)
-    else:
-        st.markdown('<div></div>', unsafe_allow_html=True)
-
-    # ================================
-    # 4. LISTAS DE PARÁMETROS
-    # ================================
-    parametros_fq = [
-        "Temperatura", "pH", "Cloro residual libre", "Alcalinidad total", "Aluminio residual",
-        "Calcio", "Cloruros", "Color aparente", "Conductividad", "Dureza total", "Fosfato",
-        "Hierro total", "Magnesio", "Nitrito", "Sólidos disueltos totales", "Sulfatos", "Turbiedad",
-        "Amonio", "DQO", "Dureza cálcica", "Fenol", "Fluoruro", "Manganeso", "Nitrato", "Oxígeno disuelto"
-    ]
-
-    parametros_micro = ["Coliformes totales", "Escherichia coli", "Mesófilos aerobios"]
-
-    correcciones = {"Cloro residual": "Cloro residual libre"}
-
-    # ================================
-    # 5. TAB: NUEVAS RECEPCIONES
-    # ================================
-    if st.session_state.tab_recepcion == "nuevas":
-        pendientes = [m for m in st.session_state.data if "Fecha Recepción" not in m]
-
-        if not pendientes:
-            st.info("No hay muestras pendientes de recepción.")
-        else:
-            codigo = st.selectbox("Seleccione la muestra registrada", [m["Código"] for m in pendientes])
-            muestra = next(m for m in pendientes if m["Código"] == codigo)
-
-            fecha_recepcion = st.date_input("Fecha de recepción")
-            hora_recepcion = st.time_input("Hora de recepción")
-            temperatura_recepcion = st.number_input("Temperatura de recepción (°C)", format="%.2f")
-            persona_recepciona = st.text_input("Recepciona (nombre)")
-
-            st.markdown("---")
-
-            seleccion_fq = st.multiselect(
-                "Parámetros físico-químicos",
-                parametros_fq,
-                key=f"new_fq_{codigo}"
-            )
-
-            seleccion_micro = st.multiselect(
-                "Parámetros microbiológicos",
-                parametros_micro,
-                key=f"new_micro_{codigo}"
-            )
-
-            if st.button("Guardar recepción"):
-                muestra["Fecha Recepción"] = fecha_recepcion.strftime("%Y-%m-%d")
-                muestra["Hora Recepción"] = hora_recepcion.strftime("%H:%M")
-                muestra["Temperatura Recepción"] = temperatura_recepcion
-                muestra["Recepcionó"] = persona_recepciona
-                muestra["Parámetros a analizar"] = {"FQ": seleccion_fq, "Micro": seleccion_micro}
-                muestra["Estado_FQ"] = "pendiente"
-                muestra["Estado_Micro"] = "pendiente"
-                guardar_datos()
-                st.success(f"Muestra {codigo} recepcionada con éxito")
-                st.rerun()
-
-    # ================================
-    # 6. TAB: RECEPCIONADAS
-    # ================================
-    elif st.session_state.tab_recepcion == "recepcionadas":
-        recepcionadas = [m for m in st.session_state.data if "Fecha Recepción" in m]
-
-        if not recepcionadas:
-            st.info("No hay muestras recepcionadas.")
-        else:
-            for muestra in recepcionadas:
-                with st.expander(f"Muestra {muestra['Código']}"):
-                    st.write(f"Recepcionada por: {muestra.get('Recepcionó', '')}")
-
-                    valores_guardados_fq = muestra.get("Parámetros a analizar", {}).get("FQ", [])
-                    valores_guardados_micro = muestra.get("Parámetros a analizar", {}).get("Micro", [])
-
-                    seleccion_fq = st.multiselect(
-                        "Parámetros físico-químicos",
-                        parametros_fq,
-                        default=[v for v in valores_guardados_fq if v in parametros_fq],
-                        key=f"edit_fq_{muestra['Código']}"
-                    )
-
-                    seleccion_micro = st.multiselect(
-                        "Parámetros microbiológicos",
-                        parametros_micro,
-                        default=[v for v in valores_guardados_micro if v in parametros_micro],
-                        key=f"edit_micro_{muestra['Código']}"
-                    )
-
-                    if st.button(f"Guardar cambios {muestra['Código']}"):
-                        muestra["Parámetros a analizar"]["FQ"] = seleccion_fq
-                        muestra["Parámetros a analizar"]["Micro"] = seleccion_micro
-                        guardar_datos()
-                        st.success(f"Parámetros de {muestra['Código']} actualizados")
-                        st.rerun()
 
 
 # FORMULARIO ANÁLISIS DE LABORATORIO
@@ -775,7 +604,7 @@ if "pantalla" in st.session_state:
         pass
     
     elif st.session_state.pantalla == "recepcion":
-        formulario_recepcion_muestra()
+        pass
 
     elif st.session_state.pantalla == "analisis":
         formulario_analisis_laboratorio()

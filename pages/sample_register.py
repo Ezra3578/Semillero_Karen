@@ -3,56 +3,65 @@ import streamlit as st
 from services.session_service import require_login, can
 
 from utils.hide_st_menu import hide_st_menu
+from utils.style_loader import load_css
 
 from components.header import render_header
 from components.footer import render_footer
 
 from laboratory.application.laboratory import Laboratory
+from laboratory.domain.parameters import TIPOS_MUESTRA, PUNTOS_RED, DISPOSITIVOS_TOMA, TIPOS_AGUA, FUENTES_ABASTECIMIENTO
 
 lab = Laboratory()
 
+#Ocultar menu de Streamlit
 hide_st_menu()
+
+#Evitar acceso sin login
 require_login()
 
+#Configuracion de pagina
 st.set_page_config(page_title="Registro de muestra", layout="wide")
 
+#Header
 render_header()
 
+#Evitar acceso sin permiso de rol
 if not can("registrar_muestra"):
     st.error("No tienes permisos")
     st.stop()
 
-st.markdown("""
-    <div class='title'>
-        <h1 style='color: #FFFFFF;'>Registro de Muestra</h1>
-    </div>
-""", unsafe_allow_html=True)
+load_css("laboratory_pages.css")
 
+#Volver a la landing page
 if st.button("Volver"):
     st.switch_page("pages/landing.py")
 
-st.markdown("""
-    <div style='background-color: #f0f4f8; padding: 25px; border-radius: 10px; border: 1px solid #ccc;'>
-        <h3 style='color: #0057A0;'>Registro de Muestra</h3>
-    </div>
-""", unsafe_allow_html=True)
+
+# Título
+st.markdown(
+    '<div class="titulo-seccion">Registro de muestra</div>',
+    unsafe_allow_html=True
+)
 
 # Interfaz
 col1, col2 = st.columns(2)
 
 with col1:
+    #Tipo de muestra
     tipo_muestra = st.selectbox(
-        "Tipo de Muestra", ["", "Interna", "Red", "Externa"]
+        "Tipo de Muestra", 
+        TIPOS_MUESTRA
     )
 
     codigo_punto_red = None
+    
+    #Campo opcional de Red
     if tipo_muestra == "Red":
+        
+        #Puntos de red por defecto
         opciones = st.session_state.setdefault(
             "puntos_red",
-            ["San Cristóbal", "Silveria Espinoza", "Santa Rita", "Copihue", "Alcaldía",
-                "Girardot", "Arboleda", "Manablanca", "Carcel de la policia", "Batallón",
-                "Universidad", "Coliseo", "Brasilia", "Hospital", "SENA", "Prado",
-                "Pueblo Viejo", "Villa Olímpica"]
+            PUNTOS_RED
         )
 
         seleccion = st.selectbox(
@@ -60,6 +69,7 @@ with col1:
             [""] + opciones + ["Crear nuevo punto de red"]
         )
 
+        #Agregar un nuevo punto de red
         if seleccion == "Crear nuevo punto de red":
             nuevo = st.text_input("Ingrese el nuevo código del punto de red")
             if nuevo:
@@ -67,44 +77,59 @@ with col1:
         elif seleccion:
             codigo_punto_red = seleccion
 
+    #Fecha
     fecha = st.date_input("Fecha")
+    
+    #Quien_muestrea
     quien_muestrea = st.text_input("Persona que tomó la muestra")
 
+    #Dispositivo de toma de muestra
     dispositivo = st.selectbox(
         "Dispositivo de Toma de Muestra",
-        ["", "Manguera", "Canal", "Grifo", "Otro"]
+        DISPOSITIVOS_TOMA
     )
+
+    #Agregar nuevo dispositivo
     if dispositivo == "Otro":
         dispositivo = st.text_input("Especifique el dispositivo")
 
+    #Tipos de agua
     tipo_agua = st.selectbox(
         "Tipo de Agua",
-        ["", "Agua potable (AP)", "Agua superficial (ASP)",
-            "Agua subterránea (ASB)", "Agua envasada (AE)",
-            "Agua lluvia (AL)", "Otra (O)"]
+        TIPOS_AGUA
     )
+
+    #Agregar tipo de agua
     if tipo_agua == "Otra (O)":
         tipo_agua = st.text_input("Especifique el tipo de agua")
 
 with col2:
+
+    #Hora de Registro
     hora = st.time_input("Hora", step=60)
-    fuente = st.selectbox("Fuente de Abastecimiento", ["", "Andes Medio", "Mancilla Bajo", 
-                                                        " Botello Alto", "San Rafael I", 
-                                                        "San Rafael II", "Deudoro Aponte", 
-                                                        "Manablanca","Cartagenita","Guapucha II",
-                                                        "Gatillo 0","Gatillo 1", "Gatillo 2","Gatillo 3"])
+
+    #Fuente de abastecimiento
+    fuente = st.selectbox(
+        "Fuente de Abastecimiento",
+        FUENTES_ABASTECIMIENTO    
+    )
     observaciones = st.text_area("Observaciones")
 
-
-st.markdown("""
-    <div style='background-color: #f0f4f8; padding: 25px; border-radius: 10px; border: 1px solid #ccc;'>
-            <h3 style='color: #0057A0;'>Datos In Situ</h3>
-    </div>
-""", unsafe_allow_html=True)
+#Titulo
+st.markdown(
+    '<div class="titulo-seccion">Datos in Situ</div>',
+    unsafe_allow_html=True
+)
 
 col3, col4, col5 = st.columns(3)
+
+#Registrar ph
 ph = col3.number_input("pH", format="%.2f")
+
+#Registrar cloro
 cloro = col4.number_input("Cloro (mg/L)", format="%.2f")
+
+#Registrar Temperatura
 temperatura = col5.number_input("Temperatura (°C)", format="%.2f")
 
 #Guardar
