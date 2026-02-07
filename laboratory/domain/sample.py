@@ -107,20 +107,52 @@ class Sample:
 
 
     #Resultados de Análisis
-    def add_results(self, *,
+    def add_results(self,*,
                     fq: Optional[Dict[str, float]] = None,
-                    micro: Optional[Dict[str, float]] = None,):
+                    micro: Optional[Dict[str, Dict[str, float]]] = None,):
         
-        if self.estado_recepcion != "recibida": #Si la muestra sigue "sin_recibir", marca error
+        #Validar recepción
+        if self.estado_recepcion != "recibida":
             raise ValueError("No se puede analizar una muestra no recibida")
 
+        #Validar que haya algún dato
+        if not fq and not micro:
+            raise ValueError("No se proporcionaron resultados para guardar")
+
+        #Inicializar estructura si no existe
+        if self.resultados is None:
+            self.resultados = {"FQ": {}, "Micro": {}}
+
+        # ---- FÍSICO-QUÍMICOS ----
         if fq:
+            if not isinstance(fq, dict):
+                raise ValueError("Resultados FQ inválidos")
+
             self.resultados["FQ"].update(fq)
             self.estado_fq = "analizado"
 
+        # ---- MICRO ----
         if micro:
-            self.resultados["Micro"].update(micro)
-            self.estado_micro = "analizado"
+            if not isinstance(micro, dict):
+                raise ValueError("Resultados Micro inválidos")
+
+            for param, ensayos in micro.items():
+                if not isinstance(ensayos, dict):
+                    raise ValueError(f"Formato inválido para Micro en {param}")
+
+                if "ensayo_1" not in ensayos or "ensayo_2" not in ensayos:
+                    raise ValueError(f"Faltan ensayos en {param}")
+
+                e1 = ensayos["ensayo_1"]
+                e2 = ensayos["ensayo_2"]
+
+                if not isinstance(e1, (int, float)) or not isinstance(e2, (int, float)):
+                    raise ValueError(f"Ensayos inválidos en {param}")
+
+            if micro:  # Solo si hay resultados
+                self.resultados["Micro"].update(micro)
+                self.estado_micro = "analizado"
+
 
     
     #Convierte el objeto al formato JSON

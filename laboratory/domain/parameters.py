@@ -34,7 +34,39 @@ MICRO_PARAMETERS = [
     "Mesófilos aerobios",
 ]
 
+#Unidades
+UNIDADES = {
+        "Temperatura":"°C",
+        "pH":"Unidades",
+        "Cloro residual libre":"mg Cl₂/L",
+        "Alcalinidad total":"mg CaCO₃/L",
+        "Aluminio residual":"mg Al/L",
+        "Calcio":"mg Ca/L",
+        "Cloruros":"mg Cl/L",
+        "Color aparente":"UPC",
+        "Conductividad":"µS/cm",
+        "Dureza total":"mg CaCO₃/L",
+        "Fosfato":"mg PO₄³/L",
+        "Hierro total":"mg Fe/L",
+        "Magnesio":"mg Mg/L",
+        "Nitrito":"mg NO₂/L",
+        "Sólidos disueltos totales":"mg/L",
+        "Sulfatos":"mg SO₄²/L",
+        "Turbiedad":"UNT",
+        "Amonio":"mg NH₄⁺/L",
+        "DQO":"mg O₂/L",
+        "Dureza cálcica":"mg CaCO₃/L",
+        "Fenol":"mg C₆H₅OH/L",
+        "Fluoruro":"mg F⁻/L",
+        "Manganeso":"mg Mn/L",
+        "Nitrato":"mg NO₃⁻/L",
+        "Oxígeno disuelto":"mg OD/L",
+        "Coliformes totales": "NMP/100mL", 
+        "Escherichia coli": "NMP/100mL", 
+        "Mesófilos aerobios": "UFC/mL"
+}
 
+#Tipos de muestras
 TIPOS_MUESTRA = [
     "",
     "Interna",
@@ -42,6 +74,7 @@ TIPOS_MUESTRA = [
     "Red"
 ]
 
+#Puntos de red
 PUNTOS_RED = [
     "San Cristóbal", 
     "Silveria Espinoza", 
@@ -63,6 +96,7 @@ PUNTOS_RED = [
     "Villa Olímpica"
 ]
 
+#Dispositivos de toma
 DISPOSITIVOS_TOMA = [
     "", 
     "Manguera", 
@@ -71,6 +105,7 @@ DISPOSITIVOS_TOMA = [
     "Otro"
 ]
 
+#Tipos de agua
 TIPOS_AGUA = [
     "", 
     "Agua potable (AP)", 
@@ -81,6 +116,7 @@ TIPOS_AGUA = [
     "Otra (O)"
 ]
 
+#Fuentes de abastecimiento
 FUENTES_ABASTECIMIENTO = [
     "", 
     "Andes Medio", 

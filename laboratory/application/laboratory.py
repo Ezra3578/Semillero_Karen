@@ -1,41 +1,63 @@
+from typing import Literal
+
 from laboratory.use_cases.register_sample import register_sample_uc
 from laboratory.use_cases.reception import receive_sample_uc
 from laboratory.use_cases.update_reception import update_reception_parameters_uc
+from laboratory.use_cases.analysis import analyze_sample_uc
 
 from laboratory.domain.sample import Sample
-
 from laboratory.repository import load_samples, save_samples
 
 
 class Laboratory:
 
-    #Hace "públicas" las muestras 
-    def get_samples(self):
-        return load_samples()
+    # ---------- HELPERS ----------
 
-    #Cambia una muestra y guarda la actualizada
-    def _replace_and_save(self, samples: list[dict], sample):
-        #Reemplaza una muestra del JSON (o la "actualiza" xD)
+    #Reemplazar y guardar la mues
+    def _replace_and_save(self, samples: list[dict], sample: Sample):
         for i, s in enumerate(samples):
-            if s["Código"] == sample.codigo:
+            if s.get("Código") == sample.codigo:
                 samples[i] = sample.to_dict()
                 break
         else:
             raise ValueError("No se pudo reemplazar la muestra")
-
+        
         save_samples(samples)
 
 
+    # ---------- QUERIES ----------
 
-    #REGISTRO
-    def register_sample(self, data: dict):
+    def get_samples(self) -> list[dict]:
+        return load_samples()
+    
+    def search_sample_by_code(self, codigo: str, samples: list[dict]) -> dict:
+        sample = next((s for s in samples if s.get("Código") == codigo), None)
+        if not sample:
+            raise ValueError("Muestra no encontrada")
+        return sample
+
+    def get_analysis_view(self,*,
+                          tipe: Literal["FQ", "Micro"],
+                          state: Literal["pendiente", "analizado"],) -> dict[str, dict]:
+
         samples = load_samples()
+        state_key = "Estado_FQ" if tipe == "FQ" else "Estado_Micro"
 
-        existing_codes = [
-            s.get("Código") or s.get("codigo")
-            for s in samples
-            if s.get("Código") or s.get("codigo")
-        ]
+        result = {}
+        for s in samples:
+            if s.get(state_key) == state:
+                result[s["Código"]] = {
+                    "analizar": s.get("Parámetros a analizar", {}).get(tipe, []),
+                    "resultados": s.get("Resultados", {}).get(tipe, {}),
+                }
+
+        return result
+
+    # ---------- COMMANDS ----------
+    #Registrar una muestra
+    def register_sample(self, data: dict) -> Sample:
+        samples = load_samples()
+        existing_codes = [s["Código"] for s in samples if "Código" in s]
 
         sample = register_sample_uc(
             data=data,
@@ -44,28 +66,23 @@ class Laboratory:
 
         samples.append(sample.to_dict())
         save_samples(samples)
-
         return sample
 
-
-
-    #RECEPCION
-    def receive_sample(self, *, codigo: str, fecha_recepcion, hora_recepcion,
+    #Recibir una muestra
+    def receive_sample(self,*,codigo: str, fecha_recepcion,hora_recepcion, 
                        temperatura_recepcion, recepciona,
-                       parametros_fq, parametros_micro,) -> Sample:
+                       parametros_fq, parametros_micro,):
 
-        #Carga las muestras
+        #Cargar muestras
         samples = load_samples()
+        
+        #Buscar por codigo
+        raw = self.search_sample_by_code(codigo, samples)
 
-        #Busca por ID
-        raw = next((s for s in samples if s["Código"] == codigo), None)
-        if not raw:
-            raise ValueError("Muestra no encontrada")
-
-        #Construye desde el JSON un Sample
+        #Construir objeto de Sample
         sample = Sample.from_dict(raw)
 
-        #Aplica la recepcion
+        #Aplicar recepcion
         receive_sample_uc(
             sample=sample,
             fecha_recepcion=fecha_recepcion,
@@ -76,35 +93,53 @@ class Laboratory:
             parametros_micro=parametros_micro,
         )
 
-        #Reemplaza la existente y la almacena
+        #Persistencia
         self._replace_and_save(samples, sample)
         return sample
-    
 
-
-    #EDITAR UNA RECEPCIONADA
     def update_reception_parameters(self, *, codigo: str,
-                                    parametros_fq,
-                                    parametros_micro,) -> Sample:
+                                    parametros_fq, parametros_micro,):
 
-        #Carga las muestras
+        # Cargar muestras
         samples = load_samples()
 
-        #Busca por codigo
-        raw = next((s for s in samples if s["Código"] == codigo), None)
-        if not raw:
-            raise ValueError("Muestra no encontrada")
-
-        #Construye el Sample del JSON
+        #Buscar por código
+        raw = self.search_sample_by_code(codigo, samples)
+        
+        #Construir la Sample
         sample = Sample.from_dict(raw)
 
-        #Aplica la actualizacion
+        #Aplicar actualizacion
         update_reception_parameters_uc(
             sample=sample,
             parametros_fq=parametros_fq,
             parametros_micro=parametros_micro,
         )
 
-        #Guarda
+        #Persistencia
+        self._replace_and_save(samples, sample)
+        return sample
+
+    #Analizar la muestra
+    def analyze_sample(self, *, codigo: str,
+                       fq: dict | None = None,
+                       micro: dict | None = None,):
+
+        #Cargar muestra
+        samples = load_samples()
+        
+        #Buscar por código
+        raw = self.search_sample_by_code(codigo, samples)
+        
+        #Crear Sample
+        sample = Sample.from_dict(raw)
+
+        #Aplicar Análisis
+        analyze_sample_uc(
+            sample=sample,
+            fq=fq,
+            micro=micro
+        )
+
         self._replace_and_save(samples, sample)
         return sample

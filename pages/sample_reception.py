@@ -63,16 +63,13 @@ with col2:
     if st.button("Muestras recepcionadas", use_container_width=True):
         st.session_state.tab_recepcion = "recepcionadas"
 
-# Cargar muestras
-samples = lab.get_samples()
-
 
 # TAB 1: Nuevas recepciones
 if st.session_state.tab_recepcion == "nuevas":
-
+    samples = lab.get_samples()
     pendientes = [
         s for s in samples
-        if s.get("Estado Recepción", "sin_recibir") == "sin_recibir"
+        if s.get("Estado Recepción") in (None, "sin_recibir")
     ]
 
     if not pendientes:
@@ -133,6 +130,8 @@ if st.session_state.tab_recepcion == "nuevas":
 # TAB 2: Muestras recepcionadas
 elif st.session_state.tab_recepcion == "recepcionadas":
 
+    samples = lab.get_samples()
+    
     #Filtra por "recibida"
     recepcionadas = [
         s for s in samples

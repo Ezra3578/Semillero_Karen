@@ -211,12 +211,18 @@
                 "Mesófilos aerobios"
             ]
         },
-        "Estado_FQ": "pendiente",
-        "Estado_Micro": "pendiente",
+        "Estado_FQ": "analizado",
+        "Estado_Micro": "analizado",
         "Resultados": {
             "Micro": {
-                "Coliformes totales": 1.34,
-                "Mesófilos aerobios": 1.35
+                "Coliformes totales": {
+                    "ensayo_1": 1.34,
+                    "ensayo_2": 1.45
+                },
+                "Mesófilos aerobios": {
+                    "ensayo_1": 2.34,
+                    "ensayo_2": 1.98
+                }
             },
             "FQ": {
                 "pH": 3.57,
@@ -226,79 +232,45 @@
         }
     },
     {
-        "Código": "E260206001",
-        "Fecha": "2026-02-06",
-        "Hora": "19:54",
-        "Quién Muestra": "dasdasd",
-        "Dispositivo": "Grifo",
+        "Código": "R260207001",
+        "Fecha": "2026-02-07",
+        "Hora": "16:16",
+        "Quién Muestra": "cmgf",
+        "Dispositivo": "Canal",
         "Fuente": "Andes Medio",
-        "Código Red": null,
-        "Tipo Agua": "Agua superficial (ASP)",
-        "pH": 0.01,
-        "Cloro": 0.1,
-        "Temperatura": 1.0,
+        "Código Red": "Santa Rita",
+        "Tipo Agua": "Agua envasada (AE)",
+        "pH": 1.35,
+        "Cloro": 1.41,
+        "Temperatura": 2.42,
         "Observaciones": "",
         "Estado Recepción": "recibida",
-        "Fecha Recepción": "2026-02-06",
-        "Hora Recepción": "20:15",
-        "Temperatura Recepción": 2.06,
-        "Recepcionó": "z3",
-        "Parámetros a analizar": {
-            "FQ": [
-                "Oxígeno disuelto",
-                "Aluminio residual"
-            ],
-            "Micro": [
-                "Mesófilos aerobios"
-            ]
-        },
-        "Estado_FQ": "pendiente",
-        "Estado_Micro": "pendiente",
-        "Resultados": {
-            "FQ": {},
-            "Micro": {}
-        }
-    },
-    {
-        "Código": "I260207001",
-        "Fecha": "2026-02-07",
-        "Hora": "09:31",
-        "Quién Muestra": "dsacs",
-        "Dispositivo": "Canal",
-        "Fuente": " Botello Alto",
-        "Código Red": null,
-        "Tipo Agua": "Agua lluvia (AL)",
-        "pH": 1.11,
-        "Cloro": 2.22,
-        "Temperatura": 3.33,
-        "Observaciones": "El agua era rara xD",
-        "Estado Recepción": "recibida",
         "Fecha Recepción": "2026-02-07",
-        "Hora Recepción": "09:32",
-        "Temperatura Recepción": 15.3,
-        "Recepcionó": "Alguien supongo xD",
+        "Hora Recepción": "16:16",
+        "Temperatura Recepción": 1.35,
+        "Recepcionó": "Juan xD",
         "Parámetros a analizar": {
             "FQ": [
-                "Temperatura",
-                "Color aparente",
-                "Hierro total",
-                "Calcio",
-                "Magnesio",
-                "Nitrito",
-                "Sulfatos",
-                "Conductividad"
+                "Cloro residual libre",
+                "Calcio"
             ],
             "Micro": [
-                "Escherichia coli",
-                "Coliformes totales",
-                "Mesófilos aerobios"
+                "Escherichia coli"
             ]
         },
-        "Estado_FQ": "pendiente",
-        "Estado_Micro": "pendiente",
+        "Estado_FQ": "analizado",
+        "Estado_Micro": "analizado",
         "Resultados": {
-            "FQ": {},
-            "Micro": {}
+            "FQ": {
+                "Cloro residual libre": 1.54,
+                "Calcio": 2.34
+            },
+            "Micro": {
+                "Escherichia coli": {
+                    "ensayo_1": 1.55,
+                    "ensayo_2": 2.55
+                }
+            }
         }
     }
 ]
