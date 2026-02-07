@@ -4,6 +4,7 @@ from laboratory.use_cases.register_sample import register_sample_uc
 from laboratory.use_cases.reception import receive_sample_uc
 from laboratory.use_cases.update_reception import update_reception_parameters_uc
 from laboratory.use_cases.analysis import analyze_sample_uc
+from laboratory.use_cases import consult
 
 from laboratory.domain.sample import Sample
 from laboratory.repository import load_samples, save_samples
@@ -27,31 +28,44 @@ class Laboratory:
 
     # ---------- QUERIES ----------
 
+    #Obtener todas las muestras
     def get_samples(self) -> list[dict]:
         return load_samples()
-    
-    def search_sample_by_code(self, codigo: str, samples: list[dict]) -> dict:
-        sample = next((s for s in samples if s.get("Código") == codigo), None)
-        if not sample:
-            raise ValueError("Muestra no encontrada")
-        return sample
 
-    def get_analysis_view(self,*,
-                          tipe: Literal["FQ", "Micro"],
-                          state: Literal["pendiente", "analizado"],) -> dict[str, dict]:
-
+    # Filtrar muestras según criterios
+    def filter_samples(self, *, fuente=None, mes=None, dia=None) -> list[dict]:
         samples = load_samples()
-        state_key = "Estado_FQ" if tipe == "FQ" else "Estado_Micro"
+        filtradas = consult.filter_samples_by_fuente_uc(samples, fuente)
+        filtradas = consult.filter_samples_by_mes_uc(filtradas, mes)
+        filtradas = consult.filter_samples_by_dia_uc(filtradas, dia)
+        return filtradas
 
-        result = {}
-        for s in samples:
-            if s.get(state_key) == state:
-                result[s["Código"]] = {
-                    "analizar": s.get("Parámetros a analizar", {}).get(tipe, []),
-                    "resultados": s.get("Resultados", {}).get(tipe, {}),
-                }
+    #Buscar una muestra por su código    
+    def search_sample_by_code(self, codigo: str) -> dict:
+        samples = load_samples()
+        return consult.search_sample_by_code_uc(samples, codigo)
 
-        return result
+    #Busqueda de las muestras para el analisis. Según el tipo (FQ o Micro) y su estado (pendiente o analizado)
+    def get_analysis_view(self, *, tipe: Literal["FQ", "Micro"], state: Literal["pendiente", "analizado"]) -> dict[str, dict]:
+        samples = load_samples()
+        return consult.get_analysis_view_uc(samples, tipe=tipe, state=state)
+    
+    #Obtiene las muestras que estén pendientes por ser recibidas
+    def get_pending_samples(self) -> list[dict]:
+        samples = load_samples()
+        return consult.filter_samples_by_reception_state_uc(samples, estados=[None, "sin_recibir"])
+    
+    #Obtiene las muestras que fueron recibidas
+    def get_received_samples(self) -> list[dict]:
+        samples = load_samples()
+        return consult.filter_samples_by_reception_state_uc(samples, estados=["recibida"])
+    
+    # Eliminar muestra
+    def delete_sample(self, codigo: str) -> bool:
+        samples = load_samples()
+        samples = consult.delete_sample_from_list_uc(samples, codigo)
+        save_samples(samples)
+        return True
 
     # ---------- COMMANDS ----------
     #Registrar una muestra

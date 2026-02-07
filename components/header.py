@@ -1,13 +1,14 @@
 import streamlit as st
-import streamlit.components.v1 as components
+
+from images import routes
 
 from utils.image_loader import image_to_base64
 
 def render_header():
 
-    logo_usta = image_to_base64("images/LOGO USTA.png")
-    logo_empresa = image_to_base64("images/LOGO.png")
-    logo_nombre = image_to_base64("images/NOMBRE LOGO.png")
+    logo_usta = image_to_base64(routes.logo_usta_route)
+    logo_empresa = image_to_base64(routes.logo_empresa_route)
+    logo_nombre = image_to_base64(routes.logo_nombre_route)
 
     st.markdown(f"""
         <!-- Franja superior gris -->

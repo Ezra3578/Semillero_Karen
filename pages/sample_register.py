@@ -106,7 +106,7 @@ with col1:
 with col2:
 
     #Hora de Registro
-    hora = st.time_input("Hora", step=60)
+    hora = st.time_input("Hora", value=None, step=60)
 
     #Fuente de abastecimiento
     fuente = st.selectbox(

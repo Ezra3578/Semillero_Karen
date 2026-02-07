@@ -66,11 +66,8 @@ with col2:
 
 # TAB 1: Nuevas recepciones
 if st.session_state.tab_recepcion == "nuevas":
-    samples = lab.get_samples()
-    pendientes = [
-        s for s in samples
-        if s.get("Estado Recepción") in (None, "sin_recibir")
-    ]
+
+    pendientes = lab.get_pending_samples()
 
     if not pendientes:
         st.info("No hay muestras pendientes de recepción.")
@@ -130,13 +127,8 @@ if st.session_state.tab_recepcion == "nuevas":
 # TAB 2: Muestras recepcionadas
 elif st.session_state.tab_recepcion == "recepcionadas":
 
-    samples = lab.get_samples()
-    
     #Filtra por "recibida"
-    recepcionadas = [
-        s for s in samples
-        if s.get("Estado Recepción") == "recibida"
-    ]
+    recepcionadas = lab.get_received_samples()
 
     #Si no hay
     if not recepcionadas:

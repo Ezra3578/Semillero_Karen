@@ -3,10 +3,12 @@ import streamlit as st
 from utils.style_loader import load_css
 from utils.image_loader import image_to_base64
 
+from images import routes
+
 def render_footer():
 
     load_css("footer.css")
-    logo_floter = image_to_base64("images/logo_floter.png") 
+    logo_floter = image_to_base64(routes.logo_floter_route) 
     
     st.markdown(
 f"""

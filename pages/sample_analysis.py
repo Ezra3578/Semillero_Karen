@@ -220,7 +220,7 @@ def formato_analisis(pendientes: dict[str, dict],
 if opcion_tipo_analisis == "Análisis Físico-Químicos":
     
     st.markdown(
-        "<div class='section-title'>Análisis Físico-Químico</div>",
+        "<div class='titulo-seccion'>Análisis Físico-Químico</div>",
         unsafe_allow_html=True
     )
 
@@ -232,7 +232,7 @@ if opcion_tipo_analisis == "Análisis Físico-Químicos":
 #PRUEBAS MICROBIOLÓGICAS
 elif opcion_tipo_analisis == "Análisis Microbiológicos":
     st.markdown(
-        "<div class='section-title'>Análisis microbiológicos</div>",
+        "<div class='titulo-seccion'>Análisis microbiológicos</div>",
         unsafe_allow_html=True
     )
 
