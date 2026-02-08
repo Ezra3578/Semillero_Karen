@@ -11,8 +11,8 @@ from reportlab.lib.pagesizes import A4
 
 class PDF:
     
-    def es_agua_potable(self, muestra):
-        return muestra.get("Tipo Agua") == "Agua potable (AP)"
+    def aplica_norma(self, muestra):
+        return muestra.get("Tipo Agua") == "Agua potable (AP)" or muestra.get("Tipo Agua") == "Agua superficial (ASP)"
 
     #Establecer tamaños de columnas
     def get_column_config(self, muestra, width):
@@ -20,7 +20,7 @@ class PDF:
         right_margin = 45
         usable_width = width - left_margin - right_margin
 
-        if self.es_agua_potable(muestra):
+        if self.aplica_norma(muestra):
             headers = ["Parámetro", "Unidad", "Resultado", "Resolución 2115/2007", "Cumplimiento"]
             ratios  = [1.5, 0.8, 0.8, 1, 1]
         else:
@@ -146,7 +146,7 @@ class PDF:
                 self.draw_unit_safely(p, x_cols[1], y, UNIDADES.get(param, ""))
                 p.drawString(x_cols[2], y, str(res_fq.get(param, "0.00")))
 
-                if self.es_agua_potable(muestra):
+                if self.aplica_norma(muestra):
                     valores = self.evaluar_parametro(param, res_fq.get(param))
 
                     p.drawString(x_cols[3], y, str(valores.get("val_norma")))
@@ -176,7 +176,7 @@ class PDF:
                 promedio = (ensayo_1+ensayo_2)/2
                 p.drawString(x_cols[2], y, str(promedio))
 
-                if self.es_agua_potable(muestra):
+                if self.aplica_norma(muestra):
                     valores = self.evaluar_parametro(param, promedio)
 
                     p.drawString(x_cols[3], y, str(valores.get("val_norma")))
