@@ -1,18 +1,97 @@
 from io import BytesIO
 
-from altair import Color
-
-from laboratory.domain.parameters import FQ_PARAMETERS, MICRO_PARAMETERS, UNIDADES
+from laboratory.domain.parameters import FQ_PARAMETERS, MICRO_PARAMETERS, UNIDADES, NORMA_CUMPLIMIENTO
 
 from images import routes
 
 from reportlab.pdfgen import canvas
+from reportlab.lib.colors import Color
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4
 
 class PDF:
     
-    @staticmethod
+    def es_agua_potable(self, muestra):
+        return muestra.get("Tipo Agua") == "Agua potable (AP)"
+
+    #Establecer tamaños de columnas
+    def get_column_config(self, muestra, width):
+        left_margin = 45
+        right_margin = 45
+        usable_width = width - left_margin - right_margin
+
+        if self.es_agua_potable(muestra):
+            headers = ["Parámetro", "Unidad", "Resultado", "Resolución 2115/2007", "Cumplimiento"]
+            ratios  = [1.5, 0.8, 0.8, 1, 1]
+        else:
+            headers = ["Parámetro", "Unidad", "Resultado"]
+            ratios  = [3, 1.2, 0.8]
+
+        total = sum(ratios)
+        x = left_margin
+        cols = []
+
+        for r in ratios:
+            cols.append(x)
+            x += usable_width * (r / total)
+
+        return headers, cols
+    
+    def cumple_limite(self, parametro: str, valor):
+        regla = NORMA_CUMPLIMIENTO.get(parametro)
+
+        #Si no hay regla
+        if not regla:
+            return None, "N/A"
+
+        tipo = regla.get("type")
+
+        #Valor vacío o no numérico
+        try:
+            valor = float(valor)
+        except (TypeError, ValueError):
+            return None, "N/A"
+
+        #Regla por rango
+        if tipo == "range":
+            minimo = regla.get("min")
+            maximo = regla.get("max")
+
+            if minimo is None or maximo is None:
+                return None, "N/A"
+
+            return minimo <= valor <= maximo, f"{minimo} - {maximo}"
+
+        #Regla por valor exacto
+        if tipo == "exact":
+            esperado = regla.get("value")
+
+            if esperado is None:
+                return None, "N/A"
+
+            return valor == esperado, str(esperado)
+
+        #Tipo desconocido
+        return None, "N/A"
+
+
+    
+    def evaluar_parametro(self, parametro, valor):
+        cumple, val_norma = self.cumple_limite(parametro, valor)
+
+        if cumple is None:
+            return {
+                "estado": "N/A",
+                "val_norma": val_norma
+            }
+
+        return {
+            "estado": "Cumple" if cumple else "No cumple",
+            "val_norma": val_norma
+        }
+
+
+    #Creación del PDF
     def generar_pdf_masivo(self, data):
         buffer = BytesIO()
         p = canvas.Canvas(buffer, pagesize=A4)
@@ -29,17 +108,13 @@ class PDF:
             p.drawString(45, y, "1. INFORMACIÓN DE RECEPCIÓN Y MUESTREO")
             y -= 20
             p.setFont("Helvetica", 9); p.setFillColor(Color(0, 0, 0))
-            
+
             col1, col2 = 60, 320
             datos = [
-                (f"Código: {muestra.get('Código', 'N/A')}", 
-                 f"Fuente: {muestra.get('Fuente', 'N/A')}"),
-                (f"Fecha Muestra: {muestra.get('Fecha', 'N/A')}", 
-                 f"Hora Muestra: {muestra.get('Hora', 'N/A')}"),
-                (f"Fecha Recepción: {muestra.get('Fecha Recepción', 'N/A')}", 
-                 f"Recepcionista: {muestra.get('Recepcionó', 'N/A')}"),
-                (f"Temp. Recepción: {muestra.get('Temperatura Recepción', '0')} °C", 
-                 f"Tipo de Agua: {muestra.get('Tipo Agua', 'N/A')}")
+                (f"Código: {muestra.get('Código', 'N/A')}", f"Fuente: {muestra.get('Fuente', 'N/A')}"),
+                (f"Fecha Muestra: {muestra.get('Fecha', 'N/A')}", f"Hora Muestra: {muestra.get('Hora', 'N/A')}"),
+                (f"Fecha Recepción: {muestra.get('Fecha Recepción', 'N/A')}", f"Recepcionista: {muestra.get('Recepcionó', 'N/A')}"),
+                (f"Temp. Recepción: {muestra.get('Temperatura Recepción', '0')} °C", f"Tipo de Agua: {muestra.get('Tipo Agua', 'N/A')}")
             ]
             for d1, d2 in datos:
                 p.drawString(col1, y, d1); p.drawString(col2, y, d2); y -= 14
@@ -49,17 +124,34 @@ class PDF:
             p.setFont("Helvetica-Bold", 12); p.setFillColor(Color(0, 0.2, 0.4))
             p.drawString(45, y, "2. ANÁLISIS FÍSICO-QUÍMICO")
             y -= 18
+
+            #Calcular Enunciados y tamaños de columna
+            headers, x_cols = self.get_column_config(muestra, width)
+
             p.setFont("Helvetica-Bold", 9); p.setFillColor(Color(0, 0, 0))
-            p.drawString(60, y, "Parámetro"); p.drawString(450, y, "Unidad"); p.drawString(300, y, "Resultado")
-            p.line(45, y-2, width-45, y-2); y -= 15
+            for header, x in zip(headers, x_cols):
+                p.drawString(x, y, header)
+
+            p.line(45, y - 2, width - 45, y - 2)
+            y -= 15
+
             
             res_fq = muestra.get("Resultados", {}).get("FQ", {})
+
             for param in FQ_PARAMETERS:
                 y = self.check_y(width, height, y, p)
                 p.setFont("Helvetica", 9)
-                p.drawString(60, y, param)
-                self.draw_unit_safely(p, 450, y, UNIDADES.get(param, ""))
-                p.drawString(300, y, str(res_fq.get(param, "0.00")))
+
+                p.drawString(x_cols[0], y, param)
+                self.draw_unit_safely(p, x_cols[1], y, UNIDADES.get(param, ""))
+                p.drawString(x_cols[2], y, str(res_fq.get(param, "0.00")))
+
+                if self.es_agua_potable(muestra):
+                    valores = self.evaluar_parametro(param, res_fq.get(param))
+
+                    p.drawString(x_cols[3], y, str(valores.get("val_norma")))
+                    p.drawString(x_cols[4], y, str(valores.get("estado")))
+
                 y -= 13
 
             # 3. ANÁLISIS MICROBIOLÓGICO
@@ -71,15 +163,25 @@ class PDF:
             p.line(45, y+10, width-45, y+10)
             
             res_micro = muestra.get("Resultados", {}).get("Micro", {})
+
             for param in MICRO_PARAMETERS:
                 y = self.check_y(width, height, y, p)
                 p.setFont("Helvetica", 9)
-                p.drawString(60, y, param)
-                self.draw_unit_safely(p, 450, y, UNIDADES.get(param, ""))
+                
+                p.drawString(x_cols[0], y, param)
+                self.draw_unit_safely(p, x_cols[1], y, UNIDADES.get(param, ""))
+
                 ensayo_1 = res_micro.get(param, {}).get("ensayo_1", 0.00)
                 ensayo_2 = res_micro.get(param, {}).get("ensayo_2", 0.00)
                 promedio = (ensayo_1+ensayo_2)/2
-                p.drawString(300, y, str(promedio))
+                p.drawString(x_cols[2], y, str(promedio))
+
+                if self.es_agua_potable(muestra):
+                    valores = self.evaluar_parametro(param, promedio)
+
+                    p.drawString(x_cols[3], y, str(valores.get("val_norma")))
+                    p.drawString(x_cols[4], y, str(valores.get("estado")))
+
                 y -= 13
 
         p.save()
@@ -93,7 +195,7 @@ class PDF:
                 return self.draw_header_pdf(p_obj, width, height)
             return current_y
     
-    def draw_header_pdf(p, width, height):
+    def draw_header_pdf(self, p, width, height):
         #Dibuja el encabezado. Ajustado para que el logo USTA no se vea corrido.
         y_start = height - 40 
         # Logo Empresa (Izquierda)
@@ -117,7 +219,7 @@ class PDF:
         p.line(40, height - 100, width - 40, height - 100)
         return height - 125 
 
-    def draw_footer_pdf(p, width):
+    def draw_footer_pdf(self, p, width):
         footer_y = 45 
         p.setFillColor(Color(0.95, 0.95, 0.95)) 
         p.rect(0, 0, width, footer_y + 10, fill=1, stroke=0)
@@ -128,7 +230,7 @@ class PDF:
         p.drawString(45, footer_y - 10, "Universidad Santo Tomás – Facultad de Ingeniería Ambiental")
         p.drawString(45, footer_y - 20, "📍 Bogotá D.C. | ☎️ +57 314 367 9332 | ✉️ km@usantotomas.edu.co")
 
-    def draw_unit_safely(p, x, y, unit_text):
+    def draw_unit_safely(self, p, x, y, unit_text):
         """Dibuja unidades como Cl2 o CaCO3 sin usar caracteres unicode problemáticos."""
         p.setFont("Helvetica", 9)
         # Diccionario de reemplazos manuales para subíndices

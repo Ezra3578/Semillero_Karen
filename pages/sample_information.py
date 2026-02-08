@@ -15,6 +15,7 @@ from components.header import render_header
 from components.footer import render_footer
 
 lab = Laboratory()
+pdf = PDF()
 
 #Ocultar menús de Streamlit
 hide_st_menu()
@@ -105,7 +106,7 @@ if seleccionadas:
 
     st.download_button(
         "Descargar PDF",
-        PDF.generar_pdf_masivo(data=seleccionadas),
+        pdf.generar_pdf_masivo(data=seleccionadas),
         file_name="Resultados_Muestras.pdf",
         mime="application/pdf"
     )

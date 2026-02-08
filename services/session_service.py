@@ -54,6 +54,8 @@ ROLE_PERMISSIONS = {
     }
 }
 
+ROLES = list(ROLE_PERMISSIONS.keys())
+
 def can(permission: str):
     role = st.session_state.get("rol")
     return permission in ROLE_PERMISSIONS.get(role, set())

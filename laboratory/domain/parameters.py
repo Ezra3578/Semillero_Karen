@@ -148,3 +148,88 @@ MESES = {
     "11": "Noviembre",
     "12": "Diciembre",
 }
+
+NORMA_CUMPLIMIENTO = {
+    "pH" : {
+        "type" : "range",
+        "min" : 6.5,
+        "max" : 9.0
+    },
+    "Cloro residual libre":{
+        "type" : "range",
+        "min" : 0.3,
+        "max" : 2.0
+    },
+    "Alcalinidad total":{
+        "type" : "exact",
+        "value": 200
+    },
+    "Aluminio residual":{
+        "type" : "exact",
+        "value": 0.2
+    },
+    "Calcio":{
+        "type" : "exact",
+        "value" : 60
+    },
+    "Cloruros":{
+        "type" : "exact",
+        "value": 250
+    },
+    "Color aparente":{
+        "type" : "exact",
+        "value" : 15
+    },
+    "Conductividad":{
+        "type" : "exact",
+        "value" : 1000
+    },
+    "Dureza total":{
+        "type" : "exact",
+        "value" : 300
+    },
+    "Fosfato":{
+        "type" : "exact",
+        "value" : 0.5
+    },
+    "Hierro total":{
+        "type" : "exact",
+        "value" : 0.3
+    },
+    "Magnesio":{
+        "type" : "exact",
+        "value" : 36
+    },
+    "Nitrito":{
+        "type" : "exact",
+        "value" : 0.1
+    },
+    "Sulfatos":{
+        "type" : "exact",
+        "value" : 250
+    },
+    "Turbiedad":{
+        "type" : "exact",
+        "value" : 2
+    },
+    "Fluoruro":{
+        "type" : "exact",
+        "value" : 10
+    },
+    "Manganeso":{
+        "type" : "exact",
+        "value" : 0.1
+    },
+    "Nitrato":{
+        "type" : "exact",
+        "value" : 10
+    },
+    "Coliformes totales": {
+        "type" : "exact",
+        "value" : 0
+    }, 
+    "Escherichia coli": {
+        "type" : "exact",
+        "value" : 0
+    }
+}
