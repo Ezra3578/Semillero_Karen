@@ -41,8 +41,7 @@ class Laboratory:
         return filtradas
 
     #Buscar una muestra por su código    
-    def search_sample_by_code(self, codigo: str) -> dict:
-        samples = load_samples()
+    def search_sample_by_code(self, codigo: str, samples) -> dict:
         return consult.search_sample_by_code_uc(samples, codigo)
 
     #Busqueda de las muestras para el analisis. Según el tipo (FQ o Micro) y su estado (pendiente o analizado)
