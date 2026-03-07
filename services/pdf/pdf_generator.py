@@ -9,8 +9,10 @@ from reportlab.lib.colors import Color
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4
 
+from utils.format_states import FormatStates
+
 class PDF:
-    
+
     def aplica_norma(self, muestra):
         return muestra.get("Tipo Agua") == "Agua potable (AP)" or muestra.get("Tipo Agua") == "Agua superficial (ASP)"
 
@@ -98,7 +100,9 @@ class PDF:
         width, height = A4
 
         for i, muestra in enumerate(data):
-            if i > 0: p.showPage()
+            if i > 0:
+                p.showPage()
+
             y = self.draw_header_pdf(p, width, height)
             self.draw_footer_pdf(p, width)
 
@@ -107,85 +111,105 @@ class PDF:
             p.setFillColor(Color(0, 0.2, 0.4))
             p.drawString(45, y, "1. INFORMACIÓN DE RECEPCIÓN Y MUESTREO")
             y -= 20
-            p.setFont("Helvetica", 9); p.setFillColor(Color(0, 0, 0))
+
+            p.setFont("Helvetica", 9)
+            p.setFillColor(Color(0, 0, 0))
 
             col1, col2 = 60, 320
+
             datos = [
                 (f"Código: {muestra.get('Código', 'N/A')}", f"Fuente: {muestra.get('Fuente', 'N/A')}"),
                 (f"Fecha Muestra: {muestra.get('Fecha', 'N/A')}", f"Hora Muestra: {muestra.get('Hora', 'N/A')}"),
                 (f"Fecha Recepción: {muestra.get('Fecha Recepción', 'N/A')}", f"Recepcionista: {muestra.get('Recepcionó', 'N/A')}"),
-                (f"Temp. Recepción: {muestra.get('Temperatura Recepción', '0')} °C", f"Tipo de Agua: {muestra.get('Tipo Agua', 'N/A')}")
+                (f"Temp. Recepción: {muestra.get('Temperatura Recepción', '0')} °C", f"Tipo de Agua: {muestra.get('Tipo Agua', 'N/A')}"),
+                (f"Estado FQ: {FormatStates.format_estado(muestra.get('Estado_FQ'))}", f"Estado Micro: {FormatStates.format_estado(muestra.get('Estado_Micro'))}"),
+                (f"Estado del análisis: {FormatStates.estado_analisis(muestra)}", "")
             ]
-            for d1, d2 in datos:
-                p.drawString(col1, y, d1); p.drawString(col2, y, d2); y -= 14
 
-            # 2. ANÁLISIS FÍSICO-QUÍMICO (Todos los campos)
+            for d1, d2 in datos:
+                p.drawString(col1, y, d1)
+                p.drawString(col2, y, d2)
+                y -= 14
+
+            # 2. ANÁLISIS FÍSICO-QUÍMICO
             y -= 10
-            p.setFont("Helvetica-Bold", 12); p.setFillColor(Color(0, 0.2, 0.4))
+            p.setFont("Helvetica-Bold", 12)
+            p.setFillColor(Color(0, 0.2, 0.4))
             p.drawString(45, y, "2. ANÁLISIS FÍSICO-QUÍMICO")
             y -= 18
 
-            #Calcular Enunciados y tamaños de columna
             headers, x_cols = self.get_column_config(muestra, width)
 
-            p.setFont("Helvetica-Bold", 9); p.setFillColor(Color(0, 0, 0))
+            p.setFont("Helvetica-Bold", 9)
+            p.setFillColor(Color(0, 0, 0))
+
             for header, x in zip(headers, x_cols):
                 p.drawString(x, y, header)
 
             p.line(45, y - 2, width - 45, y - 2)
             y -= 15
 
-            
-            res_fq = muestra.get("Resultados", {}).get("FQ", {})
-
             for param in FQ_PARAMETERS:
                 y = self.check_y(width, height, y, p)
+
                 p.setFont("Helvetica", 9)
 
                 p.drawString(x_cols[0], y, param)
                 self.draw_unit_safely(p, x_cols[1], y, UNIDADES.get(param, ""))
-                p.drawString(x_cols[2], y, str(res_fq.get(param, "0.00")))
+
+                resultado = FormatStates.resolver_resultado_fq(muestra, param)
+                p.drawString(x_cols[2], y, str(resultado))
 
                 if self.aplica_norma(muestra):
-                    valores = self.evaluar_parametro(param, res_fq.get(param))
 
-                    p.drawString(x_cols[3], y, str(valores.get("val_norma")))
-                    p.drawString(x_cols[4], y, str(valores.get("estado")))
+                    if isinstance(resultado, (int, float)):
+                        valores = self.evaluar_parametro(param, resultado)
+                    else:
+                        valores = {"val_norma": "N/A", "estado": "N/A"}
+
+                    p.drawString(x_cols[3], y, str(valores["val_norma"]))
+                    p.drawString(x_cols[4], y, str(valores["estado"]))
 
                 y -= 13
 
             # 3. ANÁLISIS MICROBIOLÓGICO
             y -= 15
             y = self.check_y(width, height, y, p)
-            p.setFont("Helvetica-Bold", 12); p.setFillColor(Color(0, 0.2, 0.4))
+
+            p.setFont("Helvetica-Bold", 12)
+            p.setFillColor(Color(0, 0.2, 0.4))
             p.drawString(45, y, "3. ANÁLISIS MICROBIOLÓGICO")
             y -= 18
-            p.line(45, y+10, width-45, y+10)
-            
-            res_micro = muestra.get("Resultados", {}).get("Micro", {})
+
+            p.line(45, y + 10, width - 45, y + 10)
 
             for param in MICRO_PARAMETERS:
                 y = self.check_y(width, height, y, p)
+
                 p.setFont("Helvetica", 9)
-                
+
                 p.drawString(x_cols[0], y, param)
                 self.draw_unit_safely(p, x_cols[1], y, UNIDADES.get(param, ""))
 
-                ensayo_1 = res_micro.get(param, {}).get("ensayo_1", 0.00)
-                ensayo_2 = res_micro.get(param, {}).get("ensayo_2", 0.00)
-                promedio = (ensayo_1+ensayo_2)/2
-                p.drawString(x_cols[2], y, str(promedio))
+                resultado = FormatStates.resolver_resultado_micro(muestra, param)
+                p.drawString(x_cols[2], y, str(resultado))
 
                 if self.aplica_norma(muestra):
-                    valores = self.evaluar_parametro(param, promedio)
 
-                    p.drawString(x_cols[3], y, str(valores.get("val_norma")))
-                    p.drawString(x_cols[4], y, str(valores.get("estado")))
+                    try:
+                        valor_num = float(resultado)
+                        valores = self.evaluar_parametro(param, valor_num)
+                    except:
+                        valores = {"val_norma": "N/A", "estado": "N/A"}
+
+                    p.drawString(x_cols[3], y, str(valores["val_norma"]))
+                    p.drawString(x_cols[4], y, str(valores["estado"]))
 
                 y -= 13
 
         p.save()
         buffer.seek(0)
+
         return buffer.getvalue()
     
     def check_y(self, width, height, current_y, p_obj):

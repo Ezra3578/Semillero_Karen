@@ -46,6 +46,7 @@ st.markdown("<div class='titulo-seccion'>Información de Muestras</div>", unsafe
 #Obtener todas las muestras
 samples = lab.get_samples()
 
+
 #Filtro de Fuente
 fuente_filtro = st.selectbox("Fuente de abastecimiento", [""] + sorted(set(m["Fuente"] for m in samples)))
 
@@ -63,7 +64,9 @@ if mes_seleccionado_nombre:
 dia_filtro = st.selectbox("Día (DD)", [""] + sorted(set(m["Código"][5:7] for m in samples)))
 
 # Aplicar filtros
+
 filtradas = samples
+
 if fuente_filtro:
     filtradas = [m for m in filtradas if m["Fuente"] == fuente_filtro]
 if mes_seleccionado:
@@ -99,7 +102,7 @@ if seleccionadas:
     # ---------- DESCARGAS ----------
     st.download_button(
         "Descargar Excel",
-        Excel.generar_excel_estilo_laboratorio(seleccionadas),
+        Excel.generar_excel_reporte(seleccionadas),
         file_name="Resultados_Muestras.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
