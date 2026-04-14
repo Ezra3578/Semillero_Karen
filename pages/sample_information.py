@@ -113,6 +113,13 @@ if seleccionadas:
         file_name="Resultados_Muestras.pdf",
         mime="application/pdf"
     )
+
+    if st.button("Eliminar muestras seleccionadas"):
+        for codigo in seleccionadas_codigos:
+            lab.delete_sample(codigo)
+        
+        st.success("Muestras eliminadas correctamente")
+        st.rerun()  # Recarga la app para ver cambios
 else:
     st.info("Aplica filtros y selecciona al menos una muestra para visualizar/exportar.")
 

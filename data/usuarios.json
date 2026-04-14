@@ -21,10 +21,10 @@
         "rol": "laboratorio"
     },
     {
-        "nombre": "Usuario",
-        "correo": "correo@gmail.com",
-        "usuario": "Usuario",
-        "contrasena": "$2b$12$yjP9z3A1A27GlSoZcOXlQeGvbyQ92Qu6puvc0YK.vJPVp40Xb6oKe",
+        "nombre": "Juan",
+        "correo": "correo@correoxD.com",
+        "usuario": "Juan",
+        "contrasena": "$2b$12$UMEUlR0sqZcJImJ.8HfsfOjU7X08W8AjtDlkYYTGrkT17MuPR8mJq",
         "rol": "superusuario"
     }
 ]
